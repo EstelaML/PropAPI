@@ -56,5 +56,25 @@ namespace PropAPI.Controllers
                 ctx.SaveChanges();
             }
         }
+
+        [HttpGet("PorNombre")]
+        public String GetUsuariosPorNombreE()
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var usuariosConA = ctx.Usuario
+                    .AsEnumerable()
+                    .Where(u => u.Nombre.StartsWith("E", StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+
+                return JsonSerializer.Serialize(usuariosConA, options);
+            }
+        }
+
     }
 }
