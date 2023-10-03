@@ -19,12 +19,42 @@ namespace PropAPI.Controllers
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
-                    // Otros ajustes opcionales
                 };
-
                 return JsonSerializer.Serialize(l, options);
             }
 
+        }
+
+        [HttpPost]
+        public void Post([FromBody] Usuario usuario)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.Usuario.AddAsync(usuario);
+                ctx.SaveChanges();
+            }
+        }
+
+        [HttpPut("{ID}")]
+        public void Put(int id, [FromBody] Usuario usuario)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                usuario.Id = id;
+                ctx.Usuario.Update(usuario);
+                ctx.SaveChanges();
+            }
+        }
+
+        [HttpDelete("{ID}")]
+        public void Delete(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                Usuario u = ctx.Usuario.Where(u => u.Id == id).First();
+                ctx.Usuario.Remove(u);
+                ctx.SaveChanges();
+            }
         }
     }
 }
