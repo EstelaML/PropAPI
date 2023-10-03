@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using WebApplication1.Models;
 
 namespace PropAPI.Controllers
@@ -9,13 +11,20 @@ namespace PropAPI.Controllers
     public class UsuarioController
     {
         [HttpGet]
-        public IEnumerable<dynamic> Get()
+        public String Get()
         {
             using (PropBDContext ctx = new PropBDContext())
             {
                 var l = ctx.Usuario.Include(u => u.IdComercio).ToList();
-                return l;
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                    // Otros ajustes opcionales
+                };
+
+                return JsonSerializer.Serialize(l, options);
             }
+
         }
     }
 }

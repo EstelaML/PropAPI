@@ -35,7 +35,6 @@ public partial class Comercio
     public string Facebook { get; set; }
 
     public virtual Imagen Imagen { get; set; }
-    [JsonIgnore]
     public virtual ICollection<Usuario> IdUsuario { get; set; } = new List<Usuario>();
 
     public virtual ICollection<Tipo> Tipo { get; set; } = new List<Tipo>();
