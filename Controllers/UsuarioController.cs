@@ -22,7 +22,6 @@ namespace PropAPI.Controllers
                 };
                 return JsonSerializer.Serialize(l, options);
             }
-
         }
 
         [HttpPost]
@@ -35,7 +34,7 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpPut("{ID}")]
+        [HttpPut("/{id}")]
         public void Put(int id, [FromBody] Usuario usuario)
         {
             using (PropBDContext ctx = new PropBDContext())
@@ -46,7 +45,7 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpDelete("{ID}")]
+        [HttpDelete("/{id}")]
         public void Delete(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
