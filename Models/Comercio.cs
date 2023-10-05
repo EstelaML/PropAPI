@@ -22,7 +22,7 @@ public partial class Comercio
 
     public string Descripcion { get; set; }
 
-    public int? ImagenId { get; set; }
+    public string ImagenNombre { get; set; }
 
     public string Provincia { get; set; }
 
@@ -34,7 +34,6 @@ public partial class Comercio
 
     public string Facebook { get; set; }
 
-    public virtual Imagen Imagen { get; set; }
     public virtual ICollection<Usuario> IdUsuario { get; set; } = new List<Usuario>();
 
     public virtual ICollection<Tipo> Tipo { get; set; } = new List<Tipo>();

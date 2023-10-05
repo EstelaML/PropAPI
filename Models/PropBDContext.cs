@@ -19,7 +19,6 @@ public partial class PropBDContext : DbContext
 
     public virtual DbSet<Comercio> Comercio { get; set; }
 
-    public virtual DbSet<Imagen> Imagen { get; set; }
 
     public virtual DbSet<Productos> Productos { get; set; }
 
@@ -79,25 +78,6 @@ public partial class PropBDContext : DbContext
                         j.IndexerProperty<int>("ComercioId").HasColumnName("Comercio_ID");
                         j.IndexerProperty<int>("TipoId").HasColumnName("Tipo_ID");
                     });
-        });
-
-        modelBuilder.Entity<Imagen>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Imagen__3214EC07732D2F11");
-
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
-            entity.Property(e => e.ImagenReducidad).HasMaxLength(100);
-            entity.Property(e => e.Tipo).HasMaxLength(50);
-
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Imagen)
-                .HasForeignKey<Imagen>(d => d.Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Imagen_Comercio");
-
-            entity.HasOne(d => d.Id1).WithOne(p => p.Imagen)
-                .HasForeignKey<Imagen>(d => d.Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Imagen_Usuario");
         });
 
         modelBuilder.Entity<Productos>(entity =>

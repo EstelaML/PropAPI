@@ -55,31 +55,87 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpPost("{nombreImagen}")]
-        public void PostImage(string nombreImagen, [FromBody] string base64)
+        [HttpPost("Usuario/{nombreImagen}/{nombreUsuario}")]
+        public async Task<IActionResult> PostUserImage(string nombreImagen, string nombreUsuario, [FromBody] string base64)
         {
             var base64Parts = base64.Split(',');
             string encodedData = base64Parts.Length > 1 ? base64Parts[1] : base64;
-
             byte[] decodedBytes = Convert.FromBase64String(encodedData);
 
-            using (MemoryStream streamImage = new MemoryStream(decodedBytes))
+            if (decodedBytes != null)
             {
-                try {
-                    BlobServiceClient blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=storageprop;AccountKey=9KA/FW5ozB1VLLg3ZorWfmcOd0qbzO3HLeVksK5PGyWcN8JUzWdVNJtU/Vb6DQT52tbASAcxJTy6+AStAtcc5g==;EndpointSuffix=core.windows.net");
-
-                    var blobContainerClient = blobServiceClient.GetBlobContainerClient("imagenes");
-
-                    blobContainerClient.CreateIfNotExists();
-
-                    var blobClient = blobContainerClient.GetBlobClient(nombreImagen);
-
-                    blobClient.Upload(streamImage, true);
-                } catch (Exception e)
+                using (MemoryStream streamImage = new MemoryStream(decodedBytes))
                 {
+                    try
+                    {
+                        BlobServiceClient blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=storageprop;AccountKey=9KA/FW5ozB1VLLg3ZorWfmcOd0qbzO3HLeVksK5PGyWcN8JUzWdVNJtU/Vb6DQT52tbASAcxJTy6+AStAtcc5g==;EndpointSuffix=core.windows.net");
 
+                        var blobContainerClient = blobServiceClient.GetBlobContainerClient("imagenes");
+
+                        blobContainerClient.CreateIfNotExists();
+
+                        var blobClient = blobContainerClient.GetBlobClient(nombreImagen);
+
+                        await blobClient.UploadAsync(streamImage, true);
+
+                        using (PropBDContext ctx = new PropBDContext())
+                        {
+                            Usuario user = ctx.Usuario.Where(u => u.NickName == nombreUsuario).First();
+                            user.ImagenName = nombreImagen;
+                            ctx.SaveChanges();
+                            return Ok("¡Operación exitosa!");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Error al subir la imagen: {e.Message}");
+                        return StatusCode(500); // Maneja el error de manera adecuada en tu aplicación
+                    }
                 }
             }
+            return StatusCode(500); // Maneja el error de manera adecuada en tu aplicación
+        }
+
+
+        [HttpPost("Comercio/{nombreImagen}/{idComercio}")]
+        public async Task<IActionResult> PostCompanyImage(string nombreImagen, int idComercio, [FromBody] string base64)
+        {
+            var base64Parts = base64.Split(',');
+            string encodedData = base64Parts.Length > 1 ? base64Parts[1] : base64;
+            byte[] decodedBytes = Convert.FromBase64String(encodedData);
+
+            if (decodedBytes != null)
+            {
+                using (MemoryStream streamImage = new MemoryStream(decodedBytes))
+                {
+                    try
+                    {
+                        BlobServiceClient blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=storageprop;AccountKey=9KA/FW5ozB1VLLg3ZorWfmcOd0qbzO3HLeVksK5PGyWcN8JUzWdVNJtU/Vb6DQT52tbASAcxJTy6+AStAtcc5g==;EndpointSuffix=core.windows.net");
+
+                        var blobContainerClient = blobServiceClient.GetBlobContainerClient("imagenes");
+
+                        blobContainerClient.CreateIfNotExists();
+
+                        var blobClient = blobContainerClient.GetBlobClient(nombreImagen);
+
+                        await blobClient.UploadAsync(streamImage, true);
+
+                        using (PropBDContext ctx = new PropBDContext())
+                        {
+                            Comercio comercio = ctx.Comercio.Where(u => u.Id == idComercio).First();
+                            comercio.ImagenNombre = nombreImagen;
+                            ctx.SaveChanges();
+                            return Ok("¡Operación exitosa!");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Error al subir la imagen: {e.Message}");
+                        return StatusCode(500); // Maneja el error de manera adecuada en tu aplicación
+                    }
+                }
+            }
+            return StatusCode(500); // Maneja el error de manera adecuada en tu aplicación
         }
     }
 }

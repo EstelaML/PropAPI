@@ -15,15 +15,13 @@ public partial class Usuario
 
     public int? Telefono { get; set; }
 
-    public int? ImagenId { get; set; }
+    public string ImagenName { get; set; }
 
     public string Contraseña { get; set; }
 
     public string Mail { get; set; }
 
     public bool? Estado { get; set; }
-
-    public virtual Imagen Imagen { get; set; }
 
     public virtual ICollection<Comercio> IdComercio { get; set; } = new List<Comercio>();
 
