@@ -16,7 +16,7 @@ namespace PropAPI.Controllers
 {
     [ApiController]
     [Route("api/Imagen")]
-    [EnableCors("PoliticaAppPROP")]
+    [EnableCors("_myAllowSpecificOrigins")]
     public class ImagenController : ControllerBase
     {
         [HttpGet("{nombreImagen}")]

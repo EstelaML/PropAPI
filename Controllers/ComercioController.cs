@@ -9,7 +9,7 @@ namespace PropAPI.Controllers
 {
         [ApiController]
         [Route("api/Comercio")]
-    [EnableCors("PoliticaAppPROP")]
+    [EnableCors("_myAllowSpecificOrigins")]
     public class ComercioController
         {
             [HttpGet]

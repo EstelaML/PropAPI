@@ -9,7 +9,7 @@ namespace PropAPI.Controllers
 {
     [ApiController]
     [Route("api/Usuario")]
-    [EnableCors("PoliticaAppPROP")]
+
     public class UsuarioController
     {
         [HttpGet]
