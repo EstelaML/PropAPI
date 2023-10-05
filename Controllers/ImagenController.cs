@@ -10,11 +10,13 @@ using WebApplication1.Models;
 using static System.Net.Mime.MediaTypeNames;
 using Microsoft.Extensions.Azure;
 using System.IO;
+using Microsoft.AspNetCore.Cors;
 
 namespace PropAPI.Controllers
 {
     [ApiController]
     [Route("api/Imagen")]
+    [EnableCors("PoliticaAppPROP")]
     public class ImagenController : ControllerBase
     {
         [HttpGet("{nombreImagen}")]

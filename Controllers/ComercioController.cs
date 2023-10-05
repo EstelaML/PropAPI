@@ -3,12 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using WebApplication1.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace PropAPI.Controllers
 {
         [ApiController]
         [Route("api/Comercio")]
-        public class ComercioController
+    [EnableCors("PoliticaAppPROP")]
+    public class ComercioController
         {
             [HttpGet]
             public String Get()

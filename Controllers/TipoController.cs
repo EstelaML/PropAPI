@@ -2,11 +2,13 @@
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using WebApplication1.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace PropAPI.Controllers
 {
     [ApiController]
     [Route("api/Tipo")]
+    [EnableCors("PoliticaAppPROP")]
     public class TipoController
     {
         [HttpGet]
