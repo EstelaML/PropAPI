@@ -26,6 +26,34 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpGet("/id/{ID}")]
+        public string GetUsuarioById(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.Usuario.Where(u => u.Id == id).Include(c => c.IdComercio).Include(d => d.IdSeguidor).Include(e => e.IdSeguido).ToList().First();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
+        [HttpGet("/name/{nombreUsuario}")]
+        public string GetUsuarioByName(string nombreUsuario)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.Usuario.Where(u => u.Nombre == nombreUsuario).Include(c => c.IdComercio).ToList().First();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
         [HttpPost]
         public void Post([FromBody] Usuario usuario)
         {
@@ -58,24 +86,24 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpGet("PorNombre")]
-        public String GetUsuariosPorNombreE()
-        {
-            using (PropBDContext ctx = new PropBDContext())
-            {
-                var usuariosConA = ctx.Usuario
-                    .AsEnumerable()
-                    .Where(u => u.Nombre.StartsWith("E", StringComparison.OrdinalIgnoreCase))
-                    .ToList();
+        //[HttpGet("PorNombre")]
+        //public String GetUsuariosPorNombreE()
+        //{
+        //    using (PropBDContext ctx = new PropBDContext())
+        //    {
+        //        var usuariosConA = ctx.Usuario
+        //            .AsEnumerable()
+        //            .Where(u => u.Nombre.StartsWith("E", StringComparison.OrdinalIgnoreCase))
+        //            .ToList();
 
-                var options = new JsonSerializerOptions
-                {
-                    ReferenceHandler = ReferenceHandler.Preserve,
-                };
+        //        var options = new JsonSerializerOptions
+        //        {
+        //            ReferenceHandler = ReferenceHandler.Preserve,
+        //        };
 
-                return JsonSerializer.Serialize(usuariosConA, options);
-            }
-        }
+        //        return JsonSerializer.Serialize(usuariosConA, options);
+        //    }
+        //}
 
     }
 }
