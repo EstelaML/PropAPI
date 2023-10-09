@@ -26,12 +26,12 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpGet("/id/{ID}")]
+        [HttpGet("{ID}")]
         public string GetUsuarioById(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Usuario.Where(u => u.Id == id).Include(c => c.IdComercio).Include(d => d.IdSeguidor).Include(e => e.IdSeguido).ToList().First();
+                var l = ctx.Usuario.Where(u => u.Id == id).Include(c => c.IdComercio).ToList().First();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -40,7 +40,7 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpGet("/name/{nombreUsuario}")]
+        [HttpGet("/api/Usuario/name/{nombreUsuario}")]
         public string GetUsuarioByName(string nombreUsuario)
         {
             using (PropBDContext ctx = new PropBDContext())
@@ -54,7 +54,7 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpGet("/string/{nombreUsuario}")]
+        [HttpGet("/api/Usuario/string/{nombreUsuario}")]
         public string GetUsuarioByStringName(string nombreUsuario)
         {
             using (PropBDContext ctx = new PropBDContext())
