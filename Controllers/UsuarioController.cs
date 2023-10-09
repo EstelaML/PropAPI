@@ -54,6 +54,20 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpGet("/string/{nombreUsuario}")]
+        public string GetUsuarioByStringName(string nombreUsuario)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.Usuario.Where(u => u.NickName.Contains(nombreUsuario)).Include(c => c.IdComercio).ToList().First();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
         [HttpPost]
         public void Post([FromBody] Usuario usuario)
         {
