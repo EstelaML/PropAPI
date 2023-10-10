@@ -59,7 +59,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Usuario.Where(u => u.NickName.Contains(nombreUsuario)).Include(c => c.IdComercio).ToList().First();
+                var l = ctx.Usuario.Where(u => u.NickName.Contains(nombreUsuario)).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
