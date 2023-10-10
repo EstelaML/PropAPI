@@ -27,7 +27,7 @@ namespace PropAPI.Controllers
 
         }
 
-        [HttpGet("/nombre/{nombreComercio}")]
+        [HttpGet("/api/Comercio/nombre/{nombreComercio}")]
         public string GetComercioByName(string nombreComercio) 
         {
             using (PropBDContext ctx = new PropBDContext())
