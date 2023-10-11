@@ -28,11 +28,25 @@ namespace PropAPI.Controllers
         }
 
         [HttpGet("/api/Comercio/nombre/{nombreComercio}")]
-        public string GetComercioByName(string nombreComercio) 
+        public string GetComercioByName(string nombreComercio)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
                 var l = ctx.Comercio.Where(u => u.Nombre == nombreComercio).Include(c => c.IdUsuario).Include(c => c.Tipo).ToList().First();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
+        [HttpGet("/api/Comercio/string/{nombreComercio}")]
+        public string GetComercioByStringName(string nombreComercio)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.Comercio.Where(u => u.Nombre.Contains(nombreComercio)).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -87,5 +101,5 @@ namespace PropAPI.Controllers
             }
         }
     }
-    
+
 }
