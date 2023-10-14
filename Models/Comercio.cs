@@ -34,6 +34,10 @@ public partial class Comercio
 
     public string Facebook { get; set; }
 
+    public string Latitud { get; set; }
+    
+    public string Longitud { get; set; }
+
     public virtual ICollection<Usuario> IdUsuario { get; set; } = new List<Usuario>();
 
     public virtual ICollection<Tipo> Tipo { get; set; } = new List<Tipo>();
