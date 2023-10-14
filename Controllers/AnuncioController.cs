@@ -41,6 +41,62 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpGet("novedad/{ID}")]
+        public string GetNovedadFromComercio(int ID)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("novedad")).ToList();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
+        [HttpGet("oferta/{ID}")]
+        public string GetOfertaFromComercio(int ID)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("oferta")).ToList();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
+        [HttpGet("oferta/ultima/{ID}")]
+        public string GetLastOfertaFromComercio(int ID)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("oferta")).OrderByDescending(u => u.Fecha).ToList().First();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
+        [HttpGet("novedad/ultima/{ID}")]
+        public string GetLastNovedadFromComercio(int ID)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("novedad")).OrderByDescending(u => u.Fecha).ToList().First();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
         [HttpPost]
         public void Post([FromBody] Anuncio anuncio)
         {
