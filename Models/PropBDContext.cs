@@ -19,6 +19,7 @@ public partial class PropBDContext : DbContext
 
     public virtual DbSet<Comercio> Comercio { get; set; }
 
+    public virtual DbSet<Anuncio> Anuncio { get; set; }
 
     public virtual DbSet<Productos> Productos { get; set; }
 
@@ -78,6 +79,21 @@ public partial class PropBDContext : DbContext
                         j.IndexerProperty<int>("ComercioId").HasColumnName("Comercio_ID");
                         j.IndexerProperty<int>("TipoId").HasColumnName("Tipo_ID");
                     });
+
+        });
+
+        modelBuilder.Entity<Anuncio>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Anuncio__3214EC07A03641EC");
+
+            entity.Property(e => e.IdComercio).IsRequired();
+            entity.Property(e => e.Fecha).IsRequired();
+            entity.Property(e => e.Titulo).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.Descripcion).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.NombreImagenes).HasMaxLength(255);
+            entity.Property(e => e.Tipo).IsRequired().HasMaxLength(255);
+
+            entity.HasOne(e => e.Comercio).WithMany(p => p.IdAnuncio).HasForeignKey(e => e.IdComercio).HasConstraintName("fk_Oferta_Comercio");
         });
 
         modelBuilder.Entity<Productos>(entity =>
@@ -92,12 +108,16 @@ public partial class PropBDContext : DbContext
             entity.Property(e => e.Nombre).HasMaxLength(50);
         });
 
+
+
         modelBuilder.Entity<Tipo>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Tipo__3214EC07FBE66B73");
 
             entity.Property(e => e.Descripcion).HasMaxLength(200);
             entity.Property(e => e.Nombre).HasMaxLength(100);
+
+
         });
 
         modelBuilder.Entity<Usuario>(entity =>
