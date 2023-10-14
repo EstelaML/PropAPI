@@ -46,7 +46,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("novedad")).ToList();
+                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("Novedad")).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -60,7 +60,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("oferta")).ToList();
+                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("Oferta")).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -74,7 +74,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("oferta")).OrderByDescending(u => u.Fecha).ToList().First();
+                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("Oferta")).OrderByDescending(u => u.Fecha).ToList().First();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -88,7 +88,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("novedad")).OrderByDescending(u => u.Fecha).ToList().First();
+                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("Novedad")).OrderByDescending(u => u.Fecha).ToList().First();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
