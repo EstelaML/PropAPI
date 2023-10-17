@@ -140,7 +140,7 @@ namespace PropAPI.Controllers
             return StatusCode(500); // Maneja el error de manera adecuada en tu aplicación
         }
 
-        [HttpPost("{nombreImagen}")]
+        [HttpPost("/api/Imagen/{nombreImagen}")]
         public async Task<IActionResult> PostAnuncioImage(string nombreImagen, [FromBody] string base64)
         {
             var base64Parts = base64.Split(',');
@@ -162,6 +162,8 @@ namespace PropAPI.Controllers
                         var blobClient = blobContainerClient.GetBlobClient(nombreImagen);
 
                         await blobClient.UploadAsync(streamImage, true);
+
+                        return StatusCode(200);
                     }
                     catch (Exception e)
                     {
