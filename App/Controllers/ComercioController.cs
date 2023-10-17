@@ -15,15 +15,17 @@ namespace PropAPI.Controllers
         [HttpGet]
         public String Get()
         {
-            using (PropBDContext ctx = new PropBDContext())
-            {
-                var l = ctx.Comercio.Include(c => c.IdUsuario).Include(c => c.Tipo).ToList();
-                var options = new JsonSerializerOptions
-                {
-                    ReferenceHandler = ReferenceHandler.Preserve,
-                };
-                return JsonSerializer.Serialize(l, options);
-            }
+            // print in screen hola:
+            return "hola";
+            // using (PropBDContext ctx = new PropBDContext())
+            // {
+            //     var l = ctx.Comercio.Include(c => c.IdUsuario).Include(c => c.Tipo).ToList();
+            //     var options = new JsonSerializerOptions
+            //     {
+            //         ReferenceHandler = ReferenceHandler.Preserve,
+            //     };
+            //     return JsonSerializer.Serialize(l, options);
+            // }
 
         }
 
