@@ -13,4 +13,4 @@ COPY . /app
 EXPOSE 5000
 
 # run the command 'dotnet run' when the container launches
-CMD ["dotnet", "run"]
+CMD ["dotnet", "run", "--urls=http://localhost:5001/"]
