@@ -8,4 +8,6 @@ WORKDIR /App
 RUN ["dotnet", "restore"]
 RUN ["dotnet", "build"]
 
+EXPOSE 5000
+
 ENTRYPOINT ["dotnet", "run"]
