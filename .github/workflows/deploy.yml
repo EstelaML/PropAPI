@@ -1,0 +1,18 @@
+name: Deploy to Render on Docker Branch
+
+on:
+  push:
+    branches:
+      - docker
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: HTTP GET Request
+        run: |
+          curl -X GET https://api.render.com/deploy/srv-ckncqf783ejs73e2pi6g?key=kJwCIN1t92A
