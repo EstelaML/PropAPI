@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Configura Kestrel para escuchar en todas las interfaces de red
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ListenAnyIP(5000); // Cambia 5000 al número de puerto que estás usando
+    serverOptions.ListenAnyIP(5186);
 });
 
 // Configura servicios y middleware
