@@ -8,12 +8,12 @@ namespace WebApplication1.Models;
 
 public partial class Anuncio
 {
-    public int Id { get; set; }
-    public int IdComercio { get; set; }
-    public DateTime Fecha { get; set; }
-    public string Titulo { get; set; }
-    public string Descripcion { get; set; }
-    public string NombreImagenes { get; set; }
-    public string Tipo { get; set; }
+    public int id { get; set; }
+    public int idcomercio { get; set; }
+    public DateTime fecha { get; set; }
+    public string titulo { get; set; }
+    public string descripcion { get; set; }
+    public string imagenes { get; set; }
+    public string tipo { get; set; }
     public Comercio Comercio { get; set; }
 }

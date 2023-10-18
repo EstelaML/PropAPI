@@ -7,11 +7,11 @@ namespace WebApplication1.Models;
 
 public partial class Tipo
 {
-    public int Id { get; set; }
+    public int id { get; set; }
 
-    public string Nombre { get; set; }
+    public string nombre { get; set; }
 
-    public string Descripcion { get; set; }
+    public string descripcion { get; set; }
 
-    public virtual ICollection<Comercio> Comercio { get; set; } = new List<Comercio>();
+    public virtual ICollection<Comercio> comercio_id { get; set; } = new List<Comercio>();
 }

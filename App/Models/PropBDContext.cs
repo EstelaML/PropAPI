@@ -3,13 +3,17 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace WebApplication1.Models;
 
 public partial class PropBDContext : DbContext
 {
+    private readonly DbContextOptionsBuilder optionsBuilder;
     public PropBDContext()
     {
+        optionsBuilder = new DbContextOptionsBuilder();
+        optionsBuilder.UseNpgsql("User Id=postgres;Password=4gcr4D4VpKwYK5Wz;Server=db.cgqvfaotdatwfllyfmhr.supabase.co;Port=5432;Database=postgres");
     }
 
     public PropBDContext(DbContextOptions<PropBDContext> options)
@@ -17,172 +21,160 @@ public partial class PropBDContext : DbContext
     {
     }
 
-    public virtual DbSet<Comercio> Comercio { get; set; }
+    public virtual DbSet<Comercio> comercio { get; set; }
 
-    public virtual DbSet<Anuncio> Anuncio { get; set; }
+    public virtual DbSet<Anuncio> anuncio { get; set; }
 
-    public virtual DbSet<Productos> Productos { get; set; }
+    public virtual DbSet<Productos> productos { get; set; }
 
-    public virtual DbSet<Tipo> Tipo { get; set; }
+    public virtual DbSet<Tipo> tipo { get; set; }
 
-    public virtual DbSet<Usuario> Usuario { get; set; }
+    public virtual DbSet<Usuario> usuario { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=globalserverjesus.database.windows.net;Initial Catalog=ProyectoPIN_BD;Persist Security Info=True;User ID=jesusAdmin;Password=Administrador2002");
+        => optionsBuilder.UseNpgsql("User Id=postgres;Password=4gcr4D4VpKwYK5Wz;Server=db.cgqvfaotdatwfllyfmhr.supabase.co;Port=5432;Database=postgres");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Comercio>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Comercio__3214EC079FCCB8A1");
+            entity.HasKey(e => e.id).HasName("PK__Comercio__3214EC079FCCB8A1");
 
-            entity.Property(e => e.Contraseña)
+            entity.Property(e => e.contraseña)
                 .IsRequired()
                 .HasMaxLength(200);
-            entity.Property(e => e.Descripcion)
+            entity.Property(e => e.descripcion)
                 .IsRequired()
                 .HasMaxLength(250);
-            entity.Property(e => e.Direccion)
+            entity.Property(e => e.direccion)
                 .IsRequired()
                 .HasMaxLength(200);
-            entity.Property(e => e.Facebook).HasMaxLength(200);
-            entity.Property(e => e.Horario)
+            entity.Property(e => e.facebook).HasMaxLength(200);
+            entity.Property(e => e.horario)
                 .IsRequired()
                 .HasMaxLength(100);
-            entity.Property(e => e.Instagram).HasMaxLength(200);
-            entity.Property(e => e.Mail)
+            entity.Property(e => e.instagram).HasMaxLength(200);
+            entity.Property(e => e.mail)
                 .IsRequired()
                 .HasMaxLength(250);
-            entity.Property(e => e.Nombre)
+            entity.Property(e => e.nombre)
                 .IsRequired()
                 .HasMaxLength(100);
-            entity.Property(e => e.Provincia)
+            entity.Property(e => e.provincia)
                 .IsRequired()
                 .HasMaxLength(100);
-            entity.Property(e => e.Web).HasMaxLength(200);
+            entity.Property(e => e.web).HasMaxLength(200);
 
-            entity.HasMany(d => d.Tipo).WithMany(p => p.Comercio)
+            entity.HasMany(d => d.tipo_id).WithMany(p => p.comercio_id)
                 .UsingEntity<Dictionary<string, object>>(
-                    "TipoComercio",
+                    "tipocomercio",
                     r => r.HasOne<Tipo>().WithMany()
-                        .HasForeignKey("TipoId")
+                        .HasForeignKey("tipo_id")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_TipoID_ID"),
+                        .HasConstraintName("FK_TipoComercio_Tipo"),
                     l => l.HasOne<Comercio>().WithMany()
-                        .HasForeignKey("ComercioId")
+                        .HasForeignKey("comercio_id")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_ComercioID_ID"),
+                        .HasConstraintName("FK_TipoComercio_Comercio"),
                     j =>
                     {
-                        j.HasKey("ComercioId", "TipoId").HasName("PK__TipoCome__E4130A5B45C7B26D");
-                        j.IndexerProperty<int>("ComercioId").HasColumnName("Comercio_ID");
-                        j.IndexerProperty<int>("TipoId").HasColumnName("Tipo_ID");
+                        j.HasKey("comercio_id", "tipo_id").HasName("PK__TipoCome__E4130A5B45C7B26D");
+                        j.IndexerProperty<int>("comercio_id").HasColumnName("comercio_id");
+                        j.IndexerProperty<int>("tipo_id").HasColumnName("tipo_id");
                     });
 
         });
 
         modelBuilder.Entity<Anuncio>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Anuncio__3214EC07A03641EC");
+            entity.HasKey(e => e.id).HasName("PK__Anuncio__3214EC07A03641EC");
 
-            entity.Property(e => e.IdComercio).IsRequired();
-            entity.Property(e => e.Fecha).IsRequired();
-            entity.Property(e => e.Titulo).IsRequired().HasMaxLength(255);
-            entity.Property(e => e.Descripcion).IsRequired().HasMaxLength(255);
-            entity.Property(e => e.NombreImagenes).HasMaxLength(255);
-            entity.Property(e => e.Tipo).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.idcomercio).IsRequired();
+            entity.Property(e => e.fecha).IsRequired();
+            entity.Property(e => e.titulo).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.descripcion).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.imagenes).HasMaxLength(255);
+            entity.Property(e => e.tipo).IsRequired().HasMaxLength(255);
 
-            entity.HasOne(e => e.Comercio).WithMany(p => p.IdAnuncio).HasForeignKey(e => e.IdComercio).HasConstraintName("fk_Oferta_Comercio");
-        });
-
-        modelBuilder.Entity<Productos>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("PRODUCTOS");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("ID");
-            entity.Property(e => e.Nombre).HasMaxLength(50);
+            entity.HasOne(e => e.Comercio).WithMany(p => p.idcomercio).HasForeignKey(e => e.idcomercio).HasConstraintName("fk_Anuncio_Comercio");
         });
 
 
 
         modelBuilder.Entity<Tipo>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Tipo__3214EC07FBE66B73");
+            entity.HasKey(e => e.id).HasName("PK__Tipo__3214EC07FBE66B73");
 
-            entity.Property(e => e.Descripcion).HasMaxLength(200);
-            entity.Property(e => e.Nombre).HasMaxLength(100);
+            entity.Property(e => e.descripcion).HasMaxLength(200);
+            entity.Property(e => e.nombre).HasMaxLength(100);
 
 
         });
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Usuario__3214EC074C5B678F");
+            entity.HasKey(e => e.id).HasName("PK__Usuario__3214EC074C5B678F");
 
-            entity.Property(e => e.Contraseña)
+            entity.Property(e => e.contraseña)
                 .IsRequired()
                 .HasMaxLength(200);
-            entity.Property(e => e.Mail)
+            entity.Property(e => e.mail)
                 .IsRequired()
                 .HasMaxLength(250);
-            entity.Property(e => e.NickName)
+            entity.Property(e => e.nickname)
                 .IsRequired()
                 .HasMaxLength(200);
-            entity.Property(e => e.Nombre)
+            entity.Property(e => e.nombre)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            entity.HasMany(d => d.IdComercio).WithMany(p => p.IdUsuario)
+            entity.HasMany(d => d.idcomercio).WithMany(p => p.idusuario)
                 .UsingEntity<Dictionary<string, object>>(
-                    "ComerciosSeguidos",
+                    "comerciosseguidos",
                     r => r.HasOne<Comercio>().WithMany()
-                        .HasForeignKey("IdComercio")
+                        .HasForeignKey("idcomercio")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_IdComercio_ID"),
+                        .HasConstraintName("FK_ComerciosSeguidos_Comercio"),
                     l => l.HasOne<Usuario>().WithMany()
-                        .HasForeignKey("IdUsuario")
+                        .HasForeignKey("idusuario")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_IdUsuario_ID"),
+                        .HasConstraintName("FK_ComerciosSeguidos_Usuario"),
                     j =>
                     {
-                        j.HasKey("IdUsuario", "IdComercio").HasName("PK__Comercio__EB987982DF082A6B");
+                        j.HasKey("idusuario", "idcomercio").HasName("PK__Comercio__EB987982DF082A6B");
                     });
 
-            entity.HasMany(d => d.IdSeguido).WithMany(p => p.IdSeguidor)
+            entity.HasMany(d => d.idseguido).WithMany(p => p.idseguidor)
                 .UsingEntity<Dictionary<string, object>>(
-                    "UsuariosSeguidos",
+                    "usuariosseguidos",
                     r => r.HasOne<Usuario>().WithMany()
-                        .HasForeignKey("IdSeguido")
+                        .HasForeignKey("idseguido")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_IdSeguido_ID"),
+                        .HasConstraintName("FK_UsuariosSeguidos_IdSeguido"),
                     l => l.HasOne<Usuario>().WithMany()
-                        .HasForeignKey("IdSeguidor")
+                        .HasForeignKey("idseguidor")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_IdSeguidor_ID"),
+                        .HasConstraintName("FK_UsuariosSeguidos_IdSeguidor"),
                     j =>
                     {
-                        j.HasKey("IdSeguidor", "IdSeguido").HasName("PK__Usuarios__70A1204396F3F294");
+                        j.HasKey("idseguidor", "idseguido").HasName("PK__Usuarios__70A1204396F3F294");
                     });
 
-            entity.HasMany(d => d.IdSeguidor).WithMany(p => p.IdSeguido)
+            entity.HasMany(d => d.idseguidor).WithMany(p => p.idseguido)
                 .UsingEntity<Dictionary<string, object>>(
-                    "UsuariosSeguidos",
+                    "usuariosseguidos",
                     r => r.HasOne<Usuario>().WithMany()
-                        .HasForeignKey("IdSeguidor")
+                        .HasForeignKey("idseguidor")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_IdSeguidor_ID"),
+                        .HasConstraintName("FK_UsuariosSeguidos_IdSeguidor"),
                     l => l.HasOne<Usuario>().WithMany()
-                        .HasForeignKey("IdSeguido")
+                        .HasForeignKey("idseguido")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_IdSeguido_ID"),
+                        .HasConstraintName("FK_UsuariosSeguidos_IdSeguido"),
                     j =>
                     {
-                        j.HasKey("IdSeguidor", "IdSeguido").HasName("PK__Usuarios__70A1204396F3F294");
+                        j.HasKey("idseguidor", "idseguido").HasName("PK__Usuarios__70A1204396F3F294");
                     });
         });
 

@@ -17,7 +17,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Comercio.Include(c => c.IdUsuario).Include(c => c.Tipo).ToList();
+                var l = ctx.comercio.Include(c => c.idusuario).Include(c => c.tipo_id).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -32,7 +32,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Comercio.Where(u => u.Nombre == nombreComercio).Include(c => c.IdUsuario).Include(c => c.Tipo).ToList().First();
+                var l = ctx.comercio.Where(u => u.nombre == nombreComercio).Include(c => c.idusuario).Include(c => c.tipo_id).ToList().First();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -46,7 +46,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Comercio.Where(u => u.Nombre.Contains(nombreComercio)).ToList();
+                var l = ctx.comercio.Where(u => u.nombre.Contains(nombreComercio)).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -60,7 +60,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Comercio.Where(u => u.Id == id).Include(c => c.IdUsuario).Include(c => c.Tipo).ToList().First();
+                var l = ctx.comercio.Where(u => u.id == id).Include(c => c.idusuario).Include(c => c.tipo_id).ToList().First();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -74,7 +74,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Comercio.AddAsync(comercio);
+                var l = ctx.comercio.AddAsync(comercio);
                 ctx.SaveChanges();
             }
         }
@@ -84,8 +84,8 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                comercio.Id = id;
-                ctx.Comercio.Update(comercio);
+                comercio.id = id;
+                ctx.comercio.Update(comercio);
                 ctx.SaveChanges();
             }
         }
@@ -95,8 +95,8 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                Comercio c = ctx.Comercio.Where(u => u.Id == id).First();
-                ctx.Comercio.Remove(c);
+                Comercio c = ctx.comercio.Where(u => u.id == id).First();
+                ctx.comercio.Remove(c);
                 ctx.SaveChanges();
             }
         }

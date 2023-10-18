@@ -17,7 +17,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Usuario.Include(u => u.IdComercio).ToList();
+                var l = ctx.usuario.Include(u => u.idcomercio).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -31,7 +31,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Usuario.Where(u => u.Id == id).Include(c => c.IdComercio).Include(u => u.IdSeguido).Include(u => u.IdSeguidor).ToList().First();
+                var l = ctx.usuario.Where(u => u.id == id).Include(c => c.idcomercio).Include(u => u.idseguido).Include(u => u.idseguidor).ToList().First();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -45,7 +45,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Usuario.Where(u => u.Nombre == nombreUsuario).Include(c => c.IdComercio).ToList().First();
+                var l = ctx.usuario.Where(u => u.nombre == nombreUsuario).Include(c => c.idcomercio).ToList().First();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -59,7 +59,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Usuario.Where(u => u.NickName.Contains(nombreUsuario)).ToList();
+                var l = ctx.usuario.Where(u => u.nickname.Contains(nombreUsuario)).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -73,7 +73,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Usuario.AddAsync(usuario);
+                var l = ctx.usuario.AddAsync(usuario);
                 ctx.SaveChanges();
             }
         }
@@ -83,8 +83,8 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                usuario.Id = id;
-                ctx.Usuario.Update(usuario);
+                usuario.id = id;
+                ctx.usuario.Update(usuario);
                 ctx.SaveChanges();
             }
         }
@@ -94,8 +94,8 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                Usuario u = ctx.Usuario.Where(u => u.Id == id).First();
-                ctx.Usuario.Remove(u);
+                Usuario u = ctx.usuario.Where(u => u.id == id).First();
+                ctx.usuario.Remove(u);
                 ctx.SaveChanges();
             }
         }

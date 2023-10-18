@@ -82,8 +82,8 @@ namespace PropAPI.Controllers
 
                         using (PropBDContext ctx = new PropBDContext())
                         {
-                            Usuario user = ctx.Usuario.Where(u => u.NickName == nombreUsuario).First();
-                            user.ImagenName = nombreImagen;
+                            Usuario user = ctx.usuario.Where(u => u.nickname == nombreUsuario).First();
+                            user.imagenid = nombreImagen;
                             ctx.SaveChanges();
                             return Ok("¡Operación exitosa!");
                         }
@@ -124,8 +124,8 @@ namespace PropAPI.Controllers
 
                         using (PropBDContext ctx = new PropBDContext())
                         {
-                            Comercio comercio = ctx.Comercio.Where(u => u.Id == idComercio).First();
-                            comercio.ImagenNombre = nombreImagen;
+                            Comercio comercio = ctx.comercio.Where(u => u.id == idComercio).First();
+                            comercio.imagenid = nombreImagen;
                             ctx.SaveChanges();
                             return Ok("¡Operación exitosa!");
                         }

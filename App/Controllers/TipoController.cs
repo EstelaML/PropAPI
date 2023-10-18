@@ -16,7 +16,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var tipo = ctx.Tipo;
+                var tipo = ctx.tipo;
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -31,7 +31,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Tipo.AddAsync(tipo);
+                var l = ctx.tipo.AddAsync(tipo);
                 ctx.SaveChanges();
             }
         }
@@ -41,8 +41,8 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                tipo.Id = id;
-                ctx.Tipo.Update(tipo);
+                tipo.id = id;
+                ctx.tipo.Update(tipo);
                 ctx.SaveChanges();
             }
         }
@@ -52,8 +52,8 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                Tipo tipo = ctx.Tipo.Where(u => u.Id == id).First();
-                ctx.Tipo.Remove(tipo);
+                Tipo tipo = ctx.tipo.Where(u => u.id == id).First();
+                ctx.tipo.Remove(tipo);
                 ctx.SaveChanges();
             }
         }

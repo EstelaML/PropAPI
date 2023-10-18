@@ -8,40 +8,40 @@ namespace WebApplication1.Models;
 
 public partial class Comercio
 {
-    public int Id { get; set; }
+    public int id { get; set; }
 
-    public string Nombre { get; set; }
+    public string nombre { get; set; }
 
-    public string Direccion { get; set; }
+    public string direccion { get; set; }
 
-    public int? Telefono { get; set; }
+    public int? telefono { get; set; }
 
-    public string Horario { get; set; }
+    public string horario { get; set; }
 
-    public string Web { get; set; }
+    public string web { get; set; }
 
-    public string Descripcion { get; set; }
+    public string descripcion { get; set; }
 
-    public string ImagenNombre { get; set; }
+    public string imagenid { get; set; }
 
-    public string Provincia { get; set; }
+    public string provincia { get; set; }
 
-    public string Contraseña { get; set; }
+    public string contraseña { get; set; }
 
-    public string Mail { get; set; }
+    public string mail { get; set; }
 
-    public string Instagram { get; set; }
+    public string instagram { get; set; }
 
-    public string Facebook { get; set; }
+    public string facebook { get; set; }
 
-    public string Latitud { get; set; }
+    public string latitud { get; set; }
 
-    public string Longitud { get; set; }
+    public string longitud { get; set; }
 
-    public virtual ICollection<Usuario> IdUsuario { get; set; } = new List<Usuario>();
+    public virtual ICollection<Usuario> idusuario { get; set; } = new List<Usuario>();
 
-    public virtual ICollection<Tipo> Tipo { get; set; } = new List<Tipo>();
+    public virtual ICollection<Tipo> tipo_id { get; set; } = new List<Tipo>();
 
-    public virtual ICollection<Anuncio> IdAnuncio { get; set; } = new List<Anuncio>();
+    public virtual ICollection<Anuncio> idcomercio { get; set; } = new List<Anuncio>();
 
 }

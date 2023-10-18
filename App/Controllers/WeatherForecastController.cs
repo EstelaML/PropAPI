@@ -32,7 +32,7 @@ namespace WebApplication1.Controllers
                .ToArray();*/
             using (PropBDContext ctx = new PropBDContext()) {
                 
-                var l = ctx.Usuario.Include(b => b.IdSeguido).Select(o => new { o.NickName, o.IdSeguidor }).ToList();
+                var l = ctx.usuario.Include(b => b.idseguido).Select(o => new { o.nickname, o.idseguidor }).ToList();
                 return l;
             }
 

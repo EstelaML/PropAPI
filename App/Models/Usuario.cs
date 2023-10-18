@@ -7,25 +7,25 @@ namespace WebApplication1.Models;
 
 public partial class Usuario
 {
-    public int Id { get; set; }
+    public int id { get; set; }
 
-    public string Nombre { get; set; }
+    public string nombre { get; set; }
 
-    public string NickName { get; set; }
+    public string nickname { get; set; }
 
-    public int? Telefono { get; set; }
+    public int? telefono { get; set; }
 
-    public string ImagenName { get; set; }
+    public string imagenid { get; set; }
 
-    public string Contraseña { get; set; }
+    public string contraseña { get; set; }
 
-    public string Mail { get; set; }
+    public string mail { get; set; }
 
-    public bool? Estado { get; set; }
+    public bool? estado { get; set; }
 
-    public virtual ICollection<Comercio> IdComercio { get; set; } = new List<Comercio>();
+    public virtual ICollection<Comercio> idcomercio { get; set; } = new List<Comercio>();
 
-    public virtual ICollection<Usuario> IdSeguido { get; set; } = new List<Usuario>();
+    public virtual ICollection<Usuario> idseguido { get; set; } = new List<Usuario>();
 
-    public virtual ICollection<Usuario> IdSeguidor { get; set; } = new List<Usuario>();
+    public virtual ICollection<Usuario> idseguidor { get; set; } = new List<Usuario>();
 }

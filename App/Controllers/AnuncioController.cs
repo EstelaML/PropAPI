@@ -15,9 +15,10 @@ namespace PropAPI.Controllers
         [HttpGet]
         public String Get()
         {
+
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Anuncio.Include(a => a.Comercio).ToList();
+                var l = ctx.anuncio.Include(a => a.Comercio).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -32,7 +33,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Anuncio.Where(u => u.Id == id).Include(a => a.Comercio).ToList().First();
+                var l = ctx.anuncio.Where(u => u.id == id).Include(a => a.Comercio).ToList().First();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -46,7 +47,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("Novedad")).ToList();
+                var l = ctx.anuncio.Where(u => u.idcomercio == ID && u.tipo.Equals("Novedad")).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -60,7 +61,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("Oferta")).ToList();
+                var l = ctx.anuncio.Where(u => u.idcomercio == ID && u.tipo.Equals("Oferta")).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -74,7 +75,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("Oferta")).OrderByDescending(u => u.Fecha).ToList().First();
+                var l = ctx.anuncio.Where(u => u.idcomercio == ID && u.tipo.Equals("Oferta")).OrderByDescending(u => u.fecha).ToList().First();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -88,7 +89,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Anuncio.Where(u => u.IdComercio == ID && u.Tipo.Equals("Novedad")).OrderByDescending(u => u.Fecha).ToList().First();
+                var l = ctx.anuncio.Where(u => u.idcomercio == ID && u.tipo.Equals("Novedad")).OrderByDescending(u => u.fecha).ToList().First();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -102,7 +103,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.Anuncio.AddAsync(anuncio);
+                var l = ctx.anuncio.AddAsync(anuncio);
                 ctx.SaveChanges();
             }
         }
@@ -112,8 +113,8 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                anuncio.Id = id;
-                ctx.Anuncio.Update(anuncio);
+                anuncio.id = id;
+                ctx.anuncio.Update(anuncio);
                 ctx.SaveChanges();
             }
         }
@@ -123,8 +124,8 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                Anuncio a = ctx.Anuncio.Where(u => u.Id == id).First();
-                ctx.Anuncio.Remove(a);
+                Anuncio a = ctx.anuncio.Where(u => u.id == id).First();
+                ctx.anuncio.Remove(a);
                 ctx.SaveChanges();
             }
         }
