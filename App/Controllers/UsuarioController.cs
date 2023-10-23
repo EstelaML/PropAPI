@@ -99,7 +99,7 @@ namespace PropAPI.Controllers
                 ctx.SaveChanges();
             }
         }
-
+        //
         //[HttpGet("PorNombre")]
         //public String GetUsuariosPorNombreE()
         //{
