@@ -22,7 +22,7 @@ public partial class Comercio
 
     public string descripcion { get; set; }
 
-    public string imagenid { get; set; }
+    public string nombreimagen { get; set; }
 
     public string provincia { get; set; }
 

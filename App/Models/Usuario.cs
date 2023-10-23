@@ -15,7 +15,7 @@ public partial class Usuario
 
     public int? telefono { get; set; }
 
-    public string imagenid { get; set; }
+    public string nombreimagen { get; set; }
 
     public string contraseña { get; set; }
 
