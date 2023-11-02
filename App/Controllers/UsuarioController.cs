@@ -68,6 +68,21 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpGet("/api/Usuario/Login")]
+        public bool LoginUsuario(string nombreUsuario, string contrasena)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var usuario = ctx.usuario
+                    .FirstOrDefault(u => u.nickname == nombreUsuario && u.contraseña == contrasena);
+
+                return usuario != null ? true : false;
+            }
+        }
+
+
+
+
         [HttpPost]
         public void Post([FromBody] Usuario usuario)
         {
