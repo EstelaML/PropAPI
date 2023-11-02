@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using WebApplication1.Models;
 using Microsoft.AspNetCore.Cors;
+using System.Reflection.Metadata.Ecma335;
 
 namespace PropAPI.Controllers
 {
@@ -12,6 +13,7 @@ namespace PropAPI.Controllers
 
     public class UsuarioController
     {
+        private Usuario? usuarioLoggeado;
         [HttpGet]
         public String Get()
         {
@@ -69,18 +71,19 @@ namespace PropAPI.Controllers
         }
 
         [HttpGet("/api/Usuario/Login")]
-        public bool LoginUsuario(string nombreUsuario, string contrasena)
+        public string LoginUsuario(string nombreUsuario, string contrasena)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var usuario = ctx.usuario
-                    .FirstOrDefault(u => u.nickname == nombreUsuario && u.contraseña == contrasena);
-
-                return usuario != null ? true : false;
+                var usuario = ctx.usuario.Where(u => u.nickname == nombreUsuario && u.contraseña == contrasena).Include(c => c.idcomercio).ToList().First();
+                usuarioLoggeado = usuario;
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return usuario != null ? JsonSerializer.Serialize(usuario, options) : "Credenciales Incorrectas";
             }
         }
-
-
 
 
         [HttpPost]
