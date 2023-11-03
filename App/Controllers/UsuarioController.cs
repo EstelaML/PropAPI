@@ -86,6 +86,28 @@ namespace PropAPI.Controllers
         }
 
 
+        [HttpGet("/Registro/{nickname}/{correo}")]
+        public string ComprobacionCredencialesRegistro(string nickname, string correo)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var nombreRepetido = ctx.usuario.Where(x => x.nickname == nickname).ToList();
+                var correoRepetido = ctx.usuario.Where(x => x.mail == correo).ToList();
+                if (nombreRepetido.Count != 0 && correoRepetido.Count != 0)
+                {
+                    return "NC";
+                } else if (nombreRepetido.Count != 0)
+                {
+                    return "N";
+                } else if (correoRepetido.Count != 0)
+                {
+                    return "C";
+                }
+                return "";
+            }
+        }
+
+
         [HttpPost]
         public void Post([FromBody] Usuario usuario)
         {
