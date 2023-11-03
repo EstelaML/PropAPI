@@ -13,7 +13,6 @@ namespace PropAPI.Controllers
 
     public class UsuarioController
     {
-        private Usuario? usuarioLoggeado;
         [HttpGet]
         public String Get()
         {
@@ -75,8 +74,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var usuario = ctx.usuario.Where(u => (u.nickname == userCredentials || u.mail == userCredentials) && u.contraseña == contrasena).Include(c => c.idcomercio).ToList().First();
-                usuarioLoggeado = usuario;
+                var usuario = ctx.usuario.Where(u => (u.nickname == userCredentials || u.mail == userCredentials) && u.contraseña == contrasena).Include(c => c.idcomercio).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
