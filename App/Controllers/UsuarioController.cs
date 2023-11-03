@@ -71,11 +71,11 @@ namespace PropAPI.Controllers
         }
 
         [HttpGet("/api/Usuario/Login")]
-        public string LoginUsuario(string nombreUsuario, string contrasena)
+        public string LoginUsuario(string userCredentials, string contrasena)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var usuario = ctx.usuario.Where(u => u.nickname == nombreUsuario && u.contraseña == contrasena).Include(c => c.idcomercio).ToList().First();
+                var usuario = ctx.usuario.Where(u => (u.nickname == userCredentials || u.mail == userCredentials) && u.contraseña == contrasena).Include(c => c.idcomercio).ToList().First();
                 usuarioLoggeado = usuario;
                 var options = new JsonSerializerOptions
                 {
