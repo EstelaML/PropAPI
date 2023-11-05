@@ -27,6 +27,18 @@ namespace PropAPI.Controllers
 
         }
 
+        [HttpGet("/api/Comercio/mail/{correo}")]
+        public bool MailRepetido(string correo)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.comercio.Where(c => c.mail == correo).ToArray().Length;
+                return l != 0;
+            }
+
+        }
+
+
         [HttpGet("/api/Comercio/nombre/{nombreComercio}")]
         public string GetComercioByName(string nombreComercio)
         {
