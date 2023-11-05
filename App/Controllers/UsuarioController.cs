@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using WebApplication1.Models;
 using Microsoft.AspNetCore.Cors;
+using System.Reflection.Metadata.Ecma335;
 
 namespace PropAPI.Controllers
 {
@@ -67,6 +68,43 @@ namespace PropAPI.Controllers
                 return JsonSerializer.Serialize(l, options);
             }
         }
+
+        [HttpGet("/api/Usuario/Login")]
+        public string LoginUsuario(string userCredentials, string contrasena)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var usuario = ctx.usuario.Where(u => (u.nickname == userCredentials || u.mail == userCredentials) && u.contraseña == contrasena).Include(c => c.idcomercio).ToList();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return usuario != null ? JsonSerializer.Serialize(usuario, options) : "Credenciales Incorrectas";
+            }
+        }
+
+
+        [HttpGet("/Registro/{nickname}/{correo}")]
+        public string ComprobacionCredencialesRegistro(string nickname, string correo)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var nombreRepetido = ctx.usuario.Where(x => x.nickname == nickname).ToList();
+                var correoRepetido = ctx.usuario.Where(x => x.mail == correo).ToList();
+                if (nombreRepetido.Count != 0 && correoRepetido.Count != 0)
+                {
+                    return "NC";
+                } else if (nombreRepetido.Count != 0)
+                {
+                    return "N";
+                } else if (correoRepetido.Count != 0)
+                {
+                    return "C";
+                }
+                return "";
+            }
+        }
+
 
         [HttpPost]
         public void Post([FromBody] Usuario usuario)
