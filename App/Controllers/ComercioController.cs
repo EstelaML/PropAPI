@@ -53,6 +53,20 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpGet("/api/Comercio/email")]
+        public string GetComercioByEmail(string email)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.comercio.Where(u => u.mail == email).Include(c => c.idusuario).Include(c => c.tipo_id).ToList().First();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
         [HttpGet("/api/Comercio/string/{nombreComercio}")]
         public string GetComercioByStringName(string nombreComercio)
         {
