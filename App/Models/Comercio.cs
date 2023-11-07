@@ -39,7 +39,6 @@ public partial class Comercio
     public string longitud { get; set; }
 
     public virtual ICollection<Usuario> idusuario { get; set; } = new List<Usuario>();
-
     public virtual ICollection<Tipo> tipo_id { get; set; } = new List<Tipo>();
 
     public virtual ICollection<Anuncio> idcomercio { get; set; } = new List<Anuncio>();

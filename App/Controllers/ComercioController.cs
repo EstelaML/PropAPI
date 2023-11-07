@@ -17,15 +17,52 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.comercio.Include(c => c.idusuario).Include(c => c.tipo_id).ToList();
+                var comercios = ctx.comercio.Include(c => c.idusuario).Include(c => c.tipo_id).ToList();
+                var comerciosProyectados = comercios.Select(c => new
+                {
+                    c.id,
+                    c.nombre,
+                    c.direccion,
+                    c.telefono,
+                    c.horario,
+                    c.web,
+                    c.descripcion,
+                    c.nombreimagen,
+                    c.provincia,
+                    c.contraseña,
+                    c.mail,
+                    c.instagram,
+                    c.facebook,
+                    c.latitud,
+                    c.longitud,
+                    idusuario = c.idusuario.Select(u => new
+                    {
+                        u.id,
+                        u.nombre,
+                        u.nickname,
+                        u.telefono,
+                        u.nombreimagen,
+                        u.contraseña,
+                        u.mail,
+                        u.estado
+                    }),
+                    tipo_id = c.tipo_id.Select(t => new
+                    {
+                        t.id,
+                        t.nombre,
+                        t.descripcion
+                    })
+                }).ToList();
+
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
                 };
-                return JsonSerializer.Serialize(l, options);
-            }
 
+                return JsonSerializer.Serialize(comerciosProyectados, options);
+            }
         }
+
 
         [HttpGet("/api/Comercio/mail/{correo}")]
         public bool MailRepetido(string correo)

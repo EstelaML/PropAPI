@@ -18,14 +18,68 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.usuario.Include(u => u.idcomercio).ToList();
+                var usuarios = ctx.usuario.Include(u => u.idcomercio).Include(u => u.idseguidor).Include(u => u.idseguido).ToList();
+                var usuariosProyectados = usuarios.Select(u => new
+                {
+                    u.id,
+                    u.nombre,
+                    u.nickname,
+                    u.telefono,
+                    u.nombreimagen,
+                    u.contraseña,
+                    u.mail,
+                    u.estado,
+                    idcomercio = u.idcomercio.Select(c => new
+                    {
+                        c.id,
+                        c.nombre,
+                        c.direccion,
+                        c.telefono,
+                        c.horario,
+                        c.web,
+                        c.descripcion,
+                        c.nombreimagen,
+                        c.provincia,
+                        c.contraseña,
+                        c.mail,
+                        c.instagram,
+                        c.facebook,
+                        c.latitud,
+                        c.longitud
+                    }),
+                    idseguido = u.idseguido.Select(s => new
+                    {
+                        s.id,
+                        s.nombre,
+                        s.nickname,
+                        s.telefono,
+                        s.nombreimagen,
+                        s.contraseña,
+                        s.mail,
+                        s.estado
+                    }),
+                    idseguidor = u.idseguidor.Select(s => new
+                    {
+                        s.id,
+                        s.nombre,
+                        s.nickname,
+                        s.telefono,
+                        s.nombreimagen,
+                        s.contraseña,
+                        s.mail,
+                        s.estado
+                    })
+                }).ToList();
+
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
                 };
-                return JsonSerializer.Serialize(l, options);
+
+                return JsonSerializer.Serialize(usuariosProyectados, options);
             }
         }
+
 
         [HttpGet("{ID}")]
         public string GetUsuarioById(int id)
