@@ -12,6 +12,7 @@ public partial class Reseña
     public int comercio { get; set; }
     public string titulo { get; set; }
     public string descripcion { get; set; }
+    public DateTime fecha { get; set; }
     public int puntuacion { get; set; }
     public string nombreimagen { get; set;}
     public virtual Comercio comercioObject { get; set; }
