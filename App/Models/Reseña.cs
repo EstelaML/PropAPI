@@ -14,4 +14,7 @@ public partial class Reseña
     public string descripcion { get; set; }
     public int puntuacion { get; set; }
     public string nombreimagen { get; set;}
+    public virtual Comercio comercioObject { get; set; }
+    public virtual Usuario usuarioObject { get; set; }
+
 }

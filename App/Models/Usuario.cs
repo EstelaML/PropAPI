@@ -28,4 +28,6 @@ public partial class Usuario
     public virtual ICollection<Usuario> idseguido { get; set; } = new List<Usuario>();
 
     public virtual ICollection<Usuario> idseguidor { get; set; } = new List<Usuario>();
+    public virtual ICollection<Reseña> reseñas { get; set; } = new List<Reseña>();
+
 }

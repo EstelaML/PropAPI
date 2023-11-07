@@ -111,6 +111,11 @@ public partial class PropBDContext : DbContext
             entity.Property(e => e.descripcion).HasMaxLength(200);
             entity.Property(e => e.titulo).HasMaxLength(100);
             entity.Property(e => e.puntuacion).HasMaxLength(1);
+
+
+            entity.HasOne(e => e.comercioObject).WithMany(p => p.reseñas).HasForeignKey(e => e.comercio).HasConstraintName("fk_Reseña_Comercio");
+            entity.HasOne(e => e.usuarioObject).WithMany(p => p.reseñas).HasForeignKey(e => e.usuario).HasConstraintName("fk_Reseña_Usuario");
+
         });
 
         modelBuilder.Entity<Tipo>(entity =>
