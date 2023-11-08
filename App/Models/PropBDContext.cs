@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using PropAPI.Controllers;
 
 namespace WebApplication1.Models;
 
@@ -24,7 +25,7 @@ public partial class PropBDContext : DbContext
     public virtual DbSet<Comercio> comercio { get; set; }
 
     public virtual DbSet<Anuncio> anuncio { get; set; }
-
+    public virtual DbSet<Lista> lista { get; set; }
     public virtual DbSet<Productos> productos { get; set; }
 
     public virtual DbSet<Tipo> tipo { get; set; }
@@ -114,71 +115,98 @@ public partial class PropBDContext : DbContext
 
         });
 
-        modelBuilder.Entity<Usuario>(entity =>
+        modelBuilder.Entity<Lista>(entity =>
         {
-            entity.HasKey(e => e.id).HasName("PK__Usuario__3214EC074C5B678F");
+            entity.HasKey(e => e.id);
 
-            entity.Property(e => e.contraseña)
-                .IsRequired()
-                .HasMaxLength(200);
-            entity.Property(e => e.mail)
-                .IsRequired()
-                .HasMaxLength(250);
-            entity.Property(e => e.nickname)
-                .IsRequired()
-                .HasMaxLength(200);
-            entity.Property(e => e.nombre)
-                .IsRequired()
-                .HasMaxLength(100);
+            entity.HasOne(e => e.usuario)
+                .WithMany()
+                .HasForeignKey(e => e.idusuario);
 
-            entity.HasMany(d => d.idcomercio).WithMany(p => p.idusuario)
+            entity.HasMany(e => e.Comercio).WithMany(p => p.lista_id)
                 .UsingEntity<Dictionary<string, object>>(
-                    "comerciosseguidos",
-                    r => r.HasOne<Comercio>().WithMany()
-                        .HasForeignKey("idcomercio")
+                   "listacomercio",
+                   r => r.HasOne<Comercio>().WithMany()
+                        .HasForeignKey("comercio")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_ComerciosSeguidos_Comercio"),
-                    l => l.HasOne<Usuario>().WithMany()
-                        .HasForeignKey("idusuario")
+                        .HasConstraintName("fk_listacomercio_comercio"),
+                   l => l.HasOne<Lista>().WithMany()
+                        .HasForeignKey("lista")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_ComerciosSeguidos_Usuario"),
-                    j =>
-                    {
-                        j.HasKey("idusuario", "idcomercio").HasName("PK__Comercio__EB987982DF082A6B");
-                    });
+                        .HasConstraintName("fk_listacomercio_lista"),
+                   j =>
+                   {
+                       j.HasKey("lista", "comercio");
+                   });
 
-            entity.HasMany(d => d.idseguido).WithMany(p => p.idseguidor)
-                .UsingEntity<Dictionary<string, object>>(
-                    "usuariosseguidos",
-                    r => r.HasOne<Usuario>().WithMany()
-                        .HasForeignKey("idseguido")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_UsuariosSeguidos_IdSeguido"),
-                    l => l.HasOne<Usuario>().WithMany()
-                        .HasForeignKey("idseguidor")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_UsuariosSeguidos_IdSeguidor"),
-                    j =>
-                    {
-                        j.HasKey("idseguidor", "idseguido").HasName("PK__Usuarios__70A1204396F3F294");
-                    });
 
-            entity.HasMany(d => d.idseguidor).WithMany(p => p.idseguido)
-                .UsingEntity<Dictionary<string, object>>(
-                    "usuariosseguidos",
-                    r => r.HasOne<Usuario>().WithMany()
-                        .HasForeignKey("idseguidor")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_UsuariosSeguidos_IdSeguidor"),
-                    l => l.HasOne<Usuario>().WithMany()
-                        .HasForeignKey("idseguido")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_UsuariosSeguidos_IdSeguido"),
-                    j =>
-                    {
-                        j.HasKey("idseguidor", "idseguido").HasName("PK__Usuarios__70A1204396F3F294");
-                    });
         });
+
+        modelBuilder.Entity<Usuario>(entity =>
+    {
+        entity.HasKey(e => e.id).HasName("PK__Usuario__3214EC074C5B678F");
+
+        entity.Property(e => e.contraseña)
+            .IsRequired()
+            .HasMaxLength(200);
+        entity.Property(e => e.mail)
+            .IsRequired()
+            .HasMaxLength(250);
+        entity.Property(e => e.nickname)
+            .IsRequired()
+            .HasMaxLength(200);
+        entity.Property(e => e.nombre)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        entity.HasMany(d => d.idcomercio).WithMany(p => p.idusuario)
+            .UsingEntity<Dictionary<string, object>>(
+                "comerciosseguidos",
+                r => r.HasOne<Comercio>().WithMany()
+                    .HasForeignKey("idcomercio")
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ComerciosSeguidos_Comercio"),
+                l => l.HasOne<Usuario>().WithMany()
+                    .HasForeignKey("idusuario")
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ComerciosSeguidos_Usuario"),
+                j =>
+                {
+                    j.HasKey("idusuario", "idcomercio").HasName("PK__Comercio__EB987982DF082A6B");
+                });
+
+        entity.HasMany(d => d.idseguido).WithMany(p => p.idseguidor)
+            .UsingEntity<Dictionary<string, object>>(
+                "usuariosseguidos",
+                r => r.HasOne<Usuario>().WithMany()
+                    .HasForeignKey("idseguido")
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UsuariosSeguidos_IdSeguido"),
+                l => l.HasOne<Usuario>().WithMany()
+                    .HasForeignKey("idseguidor")
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UsuariosSeguidos_IdSeguidor"),
+                j =>
+                {
+                    j.HasKey("idseguidor", "idseguido").HasName("PK__Usuarios__70A1204396F3F294");
+                });
+
+        entity.HasMany(d => d.idseguidor).WithMany(p => p.idseguido)
+            .UsingEntity<Dictionary<string, object>>(
+                "usuariosseguidos",
+                r => r.HasOne<Usuario>().WithMany()
+                    .HasForeignKey("idseguidor")
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UsuariosSeguidos_IdSeguidor"),
+                l => l.HasOne<Usuario>().WithMany()
+                    .HasForeignKey("idseguido")
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UsuariosSeguidos_IdSeguido"),
+                j =>
+                {
+                    j.HasKey("idseguidor", "idseguido").HasName("PK__Usuarios__70A1204396F3F294");
+                });
+    });
 
         OnModelCreatingGeneratedProcedures(modelBuilder);
         OnModelCreatingPartial(modelBuilder);
