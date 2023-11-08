@@ -32,7 +32,7 @@ public partial class PropBDContext : DbContext
 
     public virtual DbSet<Usuario> usuario { get; set; }
     public virtual DbSet<Imagen> imagenes { get; set; }
-
+    public virtual DbSet<Reseña> reseña { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -104,6 +104,20 @@ public partial class PropBDContext : DbContext
         });
 
 
+        modelBuilder.Entity<Reseña>(entity =>
+        {
+            entity.HasKey(e => e.comercio).HasName("PK__Tipo__3214EC07FBE66B73");
+            entity.HasKey(e => e.usuario).HasName("PK__Tipo__3214EC07FBE66B76");
+
+            entity.Property(e => e.descripcion).HasMaxLength(200);
+            entity.Property(e => e.titulo).HasMaxLength(100);
+            entity.Property(e => e.puntuacion).HasMaxLength(1);
+
+
+            entity.HasOne(e => e.comercioObject).WithMany(p => p.reseñas).HasForeignKey(e => e.comercio).HasConstraintName("fk_Reseña_Comercio");
+            entity.HasOne(e => e.usuarioObject).WithMany(p => p.reseñas).HasForeignKey(e => e.usuario).HasConstraintName("fk_Reseña_Usuario");
+
+        });
 
         modelBuilder.Entity<Tipo>(entity =>
         {
