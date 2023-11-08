@@ -46,6 +46,8 @@ public partial class PropBDContext : DbContext
             entity.Property(e => e.contraseña)
                 .IsRequired()
                 .HasMaxLength(200);
+            entity.Property(e => e.valoracionpromedio)
+                .HasMaxLength(200);
             entity.Property(e => e.descripcion)
                 .IsRequired()
                 .HasMaxLength(250);
