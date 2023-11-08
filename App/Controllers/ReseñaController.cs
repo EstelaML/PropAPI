@@ -40,6 +40,18 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpGet("{idComercio}/{idUsuario}")]
+        public Boolean ExisteUsuarioComercioReseña(int idComercio, int idUsuario)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.reseña.Where(x => x.usuario == idUsuario && x.comercio == idComercio).ToList();
+                return l.Count != 0;
+                // si diferente de 0 existe y devuelve true
+                // si no existe devuelve false porque es 0
+            }
+        }
+
         [HttpPost]
         public void Post([FromBody] Reseña reseña)
         {
