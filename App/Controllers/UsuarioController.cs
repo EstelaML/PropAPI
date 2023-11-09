@@ -75,7 +75,7 @@ namespace PropAPI.Controllers
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
                 };
-
+                
                 return JsonSerializer.Serialize(usuariosProyectados, options);
             }
         }
@@ -159,7 +159,6 @@ namespace PropAPI.Controllers
             }
         }
 
-
         [HttpPost]
         public void Post([FromBody] Usuario usuario)
         {
@@ -169,6 +168,63 @@ namespace PropAPI.Controllers
                 ctx.SaveChanges();
             }
         }
+
+        [HttpPost("/seguirComercio/{idUsuario}/{idComercio}")]
+        public string SeguirComercio(int idUsuario, int idComercio)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                try
+                {
+                    var usuario = ctx.usuario.Where(u => u.id == idUsuario).ToList().First();
+                    var comercio = ctx.comercio.Where(u => u.id == idComercio).ToList().First();
+                    
+                    if (usuario != null && comercio != null)
+                    {
+                        usuario.idcomercio.Add(comercio);
+                        ctx.SaveChanges();
+                        return "Relación creada con éxito";
+                    }
+                    else
+                    {
+                        return "Usuario o comercio no encontrados";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return $"Error al crear la relación: {ex.Message}";
+                }
+            }
+        }
+
+        [HttpDelete("/dejarSeguirComercio/{idUsuario}/{idComercio}")]
+        public string dejarSeguirComercio(int idUsuario, int idComercio)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                try
+                {
+                    var usuario = ctx.usuario.Where(u => u.id == idUsuario).Include(c => c.idcomercio).ToList().First();
+                    var comercio = usuario.idcomercio.Where(u => u.id == idComercio).ToList().First();
+
+                    if (usuario != null && comercio != null)
+                    {
+                        usuario.idcomercio.Remove(comercio);
+                        ctx.SaveChanges();
+                        return "Relación remove con éxito";
+                    }
+                    else
+                    {
+                        return "Usuario o comercio no encontrados";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return $"Error al remove la relación: {ex.Message}";
+                }
+            }
+        }
+
 
         [HttpPut("/{id}")]
         public void Put(int id, [FromBody] Usuario usuario)
