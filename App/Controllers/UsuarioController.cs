@@ -239,6 +239,34 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpPost("/api/Usuario/seguirUsuario/{idSeguidor}/{idSeguido}")]
+        public string SeguirUsuario(int idSeguidor, int idSeguido)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                try
+                {
+                    var usuarioSeguidor = ctx.usuario.Where(u => u.id == idSeguidor).ToList().First();
+                    var usuarioSeguido = ctx.usuario.Where(u => u.id == idSeguido).ToList().First();
+
+                    if (usuarioSeguidor != null && usuarioSeguidor != null)
+                    {
+                        usuarioSeguidor.idseguido.Add(usuarioSeguido);
+                        ctx.SaveChanges();
+                        return "Relación creada con éxito";
+                    }
+                    else
+                    {
+                        return "Usuario o comercio no encontrados";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return $"Error al crear la relación: {ex.Message}";
+                }
+            }
+        }
+
         [HttpDelete("/api/Usuario/dejarSeguirComercio/{idUsuario}/{idComercio}")]
         public string dejarSeguirComercio(int idUsuario, int idComercio)
         {
@@ -267,6 +295,33 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpDelete("/api/Usuario/dejarSeguirUsuario/{idSeguidor}/{idSeguido}")]
+        public string dejarSeguirUsuario(int idSeguidor, int idSeguido)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                try
+                {
+                    var usuarioSeguidor = ctx.usuario.Where(u => u.id == idSeguidor).Include(s => s.idseguido).ToList().First();
+                    var usuarioSeguido = ctx.usuario.Where(u => u.id == idSeguido).ToList().First();
+
+                    if (usuarioSeguidor != null && usuarioSeguidor != null)
+                    {
+                        usuarioSeguidor.idseguido.Remove(usuarioSeguido);
+                        ctx.SaveChanges();
+                        return "Relación remove con éxito";
+                    }
+                    else
+                    {
+                        return "Usuario o comercio no encontrados";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return $"Error al remove la relación: {ex.Message}";
+                }
+            }
+        }
 
         [HttpPut("/{id}")]
         public void Put(int id, [FromBody] Usuario usuario)
