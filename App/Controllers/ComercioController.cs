@@ -35,6 +35,7 @@ namespace PropAPI.Controllers
                     c.facebook,
                     c.latitud,
                     c.longitud,
+                    c.valoracionpromedio,
                     idusuario = c.idusuario.Select(u => new
                     {
                         u.id,

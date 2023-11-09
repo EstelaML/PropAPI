@@ -31,12 +31,24 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.reseña.Where(x => x.usuario == id).ToList();
+                var l = ctx.reseña.Include(a => a.comercioObject).Where(x => x.usuario == id).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
                 };
                 return JsonSerializer.Serialize(l, options);
+            }
+        }
+
+        [HttpGet("{idComercio}/{idUsuario}")]
+        public Boolean ExisteUsuarioComercioReseña(int idComercio, int idUsuario)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.reseña.Where(x => x.usuario == idUsuario && x.comercio == idComercio).ToList();
+                return l.Count != 0;
+                // si diferente de 0 existe y devuelve true
+                // si no existe devuelve false porque es 0
             }
         }
 
