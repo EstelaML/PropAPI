@@ -169,7 +169,7 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpPost("/seguirComercio/{idUsuario}/{idComercio}")]
+        [HttpPost("/api/Usuario/seguirComercio/{idUsuario}/{idComercio}")]
         public string SeguirComercio(int idUsuario, int idComercio)
         {
             using (PropBDContext ctx = new PropBDContext())
@@ -197,7 +197,7 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpDelete("/dejarSeguirComercio/{idUsuario}/{idComercio}")]
+        [HttpDelete("/api/Usuario/dejarSeguirComercio/{idUsuario}/{idComercio}")]
         public string dejarSeguirComercio(int idUsuario, int idComercio)
         {
             using (PropBDContext ctx = new PropBDContext())
