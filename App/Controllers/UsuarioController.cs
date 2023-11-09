@@ -18,7 +18,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var usuarios = ctx.usuario.Include(u => u.idcomercio).Include(u => u.idseguidor).Include(u => u.idseguido).ToList();
+                var usuarios = ctx.usuario.Include(u => u.idcomercio).ToList();
                 var usuariosProyectados = usuarios.Select(u => new
                 {
                     u.id,
@@ -46,18 +46,28 @@ namespace PropAPI.Controllers
                         c.facebook,
                         c.latitud,
                         c.longitud
-                    }),
-                    idseguido = u.idseguido.Select(s => new
-                    {
-                        s.id,
-                        s.nombre,
-                        s.nickname,
-                        s.telefono,
-                        s.nombreimagen,
-                        s.contraseña,
-                        s.mail,
-                        s.estado
-                    }),
+                    })
+                }).ToList();
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                
+                return JsonSerializer.Serialize(usuariosProyectados, options);
+            }
+        }
+
+        [HttpGet("/api/Usuario/Seguidores/{id}")]
+        public String GetSeguidoresById(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var usuarios = ctx.usuario.Where(u => u.id == id).Include(u => u.idseguidor).ToList();
+                var usuariosProyectados = usuarios.Select(u => new
+                {
+                    u.id,
+                    u.nombre,
                     idseguidor = u.idseguidor.Select(s => new
                     {
                         s.id,
@@ -75,7 +85,39 @@ namespace PropAPI.Controllers
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
                 };
-                
+
+                return JsonSerializer.Serialize(usuariosProyectados, options);
+            }
+        }
+
+        [HttpGet("/api/Usuario/Seguidos/{id}")]
+        public String GetSeguidosById(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var usuarios = ctx.usuario.Where(u => u.id == id).Include(u => u.idseguido).ToList();
+                var usuariosProyectados = usuarios.Select(u => new
+                {
+                    u.id,
+                    u.nombre,
+                    idseguido = u.idseguido.Select(s => new
+                    {
+                        s.id,
+                        s.nombre,
+                        s.nickname,
+                        s.telefono,
+                        s.nombreimagen,
+                        s.contraseña,
+                        s.mail,
+                        s.estado
+                    })
+                }).ToList();
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+
                 return JsonSerializer.Serialize(usuariosProyectados, options);
             }
         }
