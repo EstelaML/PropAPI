@@ -114,7 +114,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.usuario.Where(u => u.nickname.Contains(nombreUsuario)).ToList();
+                var l = ctx.usuario.Where(u => u.nickname.ToLower().Contains(nombreUsuario.ToLower())).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -148,10 +148,12 @@ namespace PropAPI.Controllers
                 if (nombreRepetido.Count != 0 && correoRepetido.Count != 0)
                 {
                     return "NC";
-                } else if (nombreRepetido.Count != 0)
+                }
+                else if (nombreRepetido.Count != 0)
                 {
                     return "N";
-                } else if (correoRepetido.Count != 0)
+                }
+                else if (correoRepetido.Count != 0)
                 {
                     return "C";
                 }
