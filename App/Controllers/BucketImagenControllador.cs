@@ -21,7 +21,7 @@ namespace PropAPI.Controllers
     [Route("api/Bucket")]
     public class BucketImagenControllador : ControllerBase
     {
-        [HttpPost("{bucket}/{name}")]
+        [HttpPost("/api/Bucket/{bucket}/{name}")]
         public async Task PostAsync(string bucket, string name, [FromBody] string b64)
         {            
             using (PropBDContext ctx = new PropBDContext())
