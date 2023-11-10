@@ -47,6 +47,8 @@ public partial class PropBDContext : DbContext
             entity.Property(e => e.contraseña)
                 .IsRequired()
                 .HasMaxLength(200);
+            entity.Property(e => e.valoracionpromedio)
+                .HasMaxLength(200);
             entity.Property(e => e.descripcion)
                 .IsRequired()
                 .HasMaxLength(250);
@@ -106,8 +108,7 @@ public partial class PropBDContext : DbContext
 
         modelBuilder.Entity<Reseña>(entity =>
         {
-            entity.HasKey(e => e.comercio).HasName("PK__Tipo__3214EC07FBE66B73");
-            entity.HasKey(e => e.usuario).HasName("PK__Tipo__3214EC07FBE66B76");
+            entity.HasKey(r => new { r.comercio, r.usuario});
 
             entity.Property(e => e.descripcion).HasMaxLength(200);
             entity.Property(e => e.titulo).HasMaxLength(100);
