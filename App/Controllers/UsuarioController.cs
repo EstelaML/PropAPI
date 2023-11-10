@@ -18,7 +18,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var usuarios = ctx.usuario.Include(u => u.idcomercio).Include(u => u.idseguidor).Include(u => u.idseguido).ToList();
+                var usuarios = ctx.usuario.Include(u => u.idcomercio).ToList();
                 var usuariosProyectados = usuarios.Select(u => new
                 {
                     u.id,
@@ -46,18 +46,28 @@ namespace PropAPI.Controllers
                         c.facebook,
                         c.latitud,
                         c.longitud
-                    }),
-                    idseguido = u.idseguido.Select(s => new
-                    {
-                        s.id,
-                        s.nombre,
-                        s.nickname,
-                        s.telefono,
-                        s.nombreimagen,
-                        s.contraseña,
-                        s.mail,
-                        s.estado
-                    }),
+                    })
+                }).ToList();
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                
+                return JsonSerializer.Serialize(usuariosProyectados, options);
+            }
+        }
+
+        [HttpGet("/api/Usuario/Seguidores/{id}")]
+        public String GetSeguidoresById(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var usuarios = ctx.usuario.Where(u => u.id == id).Include(u => u.idseguidor).ToList();
+                var usuariosProyectados = usuarios.Select(u => new
+                {
+                    u.id,
+                    u.nombre,
                     idseguidor = u.idseguidor.Select(s => new
                     {
                         s.id,
@@ -75,7 +85,39 @@ namespace PropAPI.Controllers
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
                 };
-                
+
+                return JsonSerializer.Serialize(usuariosProyectados, options);
+            }
+        }
+
+        [HttpGet("/api/Usuario/Seguidos/{id}")]
+        public String GetSeguidosById(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var usuarios = ctx.usuario.Where(u => u.id == id).Include(u => u.idseguido).ToList();
+                var usuariosProyectados = usuarios.Select(u => new
+                {
+                    u.id,
+                    u.nombre,
+                    idseguido = u.idseguido.Select(s => new
+                    {
+                        s.id,
+                        s.nombre,
+                        s.nickname,
+                        s.telefono,
+                        s.nombreimagen,
+                        s.contraseña,
+                        s.mail,
+                        s.estado
+                    })
+                }).ToList();
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+
                 return JsonSerializer.Serialize(usuariosProyectados, options);
             }
         }
@@ -114,7 +156,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.usuario.Where(u => u.nickname.Contains(nombreUsuario)).ToList();
+                var l = ctx.usuario.Where(u => u.nickname.ToLower().Contains(nombreUsuario.ToLower())).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -148,10 +190,12 @@ namespace PropAPI.Controllers
                 if (nombreRepetido.Count != 0 && correoRepetido.Count != 0)
                 {
                     return "NC";
-                } else if (nombreRepetido.Count != 0)
+                }
+                else if (nombreRepetido.Count != 0)
                 {
                     return "N";
-                } else if (correoRepetido.Count != 0)
+                }
+                else if (correoRepetido.Count != 0)
                 {
                     return "C";
                 }
@@ -169,7 +213,7 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpPost("/seguirComercio/{idUsuario}/{idComercio}")]
+        [HttpPost("/api/Usuario/seguirComercio/{idUsuario}/{idComercio}")]
         public string SeguirComercio(int idUsuario, int idComercio)
         {
             using (PropBDContext ctx = new PropBDContext())
@@ -197,7 +241,35 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpDelete("/dejarSeguirComercio/{idUsuario}/{idComercio}")]
+        [HttpPost("/api/Usuario/seguirUsuario/{idSeguidor}/{idSeguido}")]
+        public string SeguirUsuario(int idSeguidor, int idSeguido)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                try
+                {
+                    var usuarioSeguidor = ctx.usuario.Where(u => u.id == idSeguidor).ToList().First();
+                    var usuarioSeguido = ctx.usuario.Where(u => u.id == idSeguido).ToList().First();
+
+                    if (usuarioSeguidor != null && usuarioSeguidor != null)
+                    {
+                        usuarioSeguidor.idseguido.Add(usuarioSeguido);
+                        ctx.SaveChanges();
+                        return "Relación creada con éxito";
+                    }
+                    else
+                    {
+                        return "Usuario o comercio no encontrados";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return $"Error al crear la relación: {ex.Message}";
+                }
+            }
+        }
+
+        [HttpDelete("/api/Usuario/dejarSeguirComercio/{idUsuario}/{idComercio}")]
         public string dejarSeguirComercio(int idUsuario, int idComercio)
         {
             using (PropBDContext ctx = new PropBDContext())
@@ -225,6 +297,33 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpDelete("/api/Usuario/dejarSeguirUsuario/{idSeguidor}/{idSeguido}")]
+        public string dejarSeguirUsuario(int idSeguidor, int idSeguido)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                try
+                {
+                    var usuarioSeguidor = ctx.usuario.Where(u => u.id == idSeguidor).Include(s => s.idseguido).ToList().First();
+                    var usuarioSeguido = ctx.usuario.Where(u => u.id == idSeguido).ToList().First();
+
+                    if (usuarioSeguidor != null && usuarioSeguidor != null)
+                    {
+                        usuarioSeguidor.idseguido.Remove(usuarioSeguido);
+                        ctx.SaveChanges();
+                        return "Relación remove con éxito";
+                    }
+                    else
+                    {
+                        return "Usuario o comercio no encontrados";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return $"Error al remove la relación: {ex.Message}";
+                }
+            }
+        }
 
         [HttpPut("/{id}")]
         public void Put(int id, [FromBody] Usuario usuario)
