@@ -118,6 +118,17 @@ namespace PropAPI.Controllers
                 ctx.SaveChanges();
             }
         }
+
+        [HttpDelete("borrarNombre/{nombre}")]
+        public void BorrarPorNombre(string nombre)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                Lista a = ctx.lista.Where(u => u.nombre == nombre).First();
+                ctx.lista.Remove(a);
+                ctx.SaveChanges();
+            }
+        }
     }
 
 }
