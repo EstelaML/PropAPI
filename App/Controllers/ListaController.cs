@@ -91,6 +91,7 @@ namespace PropAPI.Controllers
                 if (lista != null && comercio != null)
                 {
                     lista.Comercio.Add(comercio);
+                    comercio.lista_id.Add(lista);
                 }
 
             }
