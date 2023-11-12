@@ -28,7 +28,7 @@ namespace PropAPI.Controllers
 
         }
 
-        [HttpGet("id")]
+        [HttpGet("id/{id}")]
         public string GetAnuncioById(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
@@ -42,7 +42,7 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpGet("id/usuario")]
+        [HttpGet("id/usuario/{id}")]
         public string GetAnuncioByUserId(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
@@ -56,7 +56,7 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpGet("id/usuario/sololistas")]
+        [HttpGet("id/usuario/sololistas/{id}")]
         public string GetAnuncioByUserIdListas(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
