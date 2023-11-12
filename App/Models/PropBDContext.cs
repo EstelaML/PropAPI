@@ -5,16 +5,32 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PropAPI.Controllers;
+using Supabase;
 
 namespace WebApplication1.Models;
 
 public partial class PropBDContext : DbContext
 {
+    private Supabase.Client client;
     private readonly DbContextOptionsBuilder optionsBuilder;
     public PropBDContext()
     {
+        
+
         optionsBuilder = new DbContextOptionsBuilder();
         optionsBuilder.UseNpgsql("User Id=postgres;Password=4gcr4D4VpKwYK5Wz;Server=db.cgqvfaotdatwfllyfmhr.supabase.co;Port=5432;Database=postgres");
+    }   
+
+    public async Task<Client> getSupabaseClientAsync()
+    {
+        var options = new Supabase.SupabaseOptions
+        {
+            AutoConnectRealtime = true,
+        };
+
+        client = new Supabase.Client("https://cgqvfaotdatwfllyfmhr.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNncXZmYW90ZGF0d2ZsbHlmbWhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc2MTAzNTYsImV4cCI6MjAxMzE4NjM1Nn0.R40ojFKkaT_AAHUADR5FknVkd3dPr238sJoRpz_sNk8", options);
+        await client.InitializeAsync();
+        return client;
     }
 
     public PropBDContext(DbContextOptions<PropBDContext> options)
