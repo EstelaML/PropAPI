@@ -42,6 +42,34 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpGet("id/usuario")]
+        public string GetAnuncioByUserId(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.lista.Where(u => u.idusuario == id).Include(a => a.Comercio).ToList();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
+        [HttpGet("id/usuario/sololistas")]
+        public string GetAnuncioByUserIdListas(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.lista.Where(u => u.idusuario == id).ToList();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
         [HttpPost]
         public void Post([FromBody] Lista lista)
         {
@@ -49,6 +77,22 @@ namespace PropAPI.Controllers
             {
                 var l = ctx.lista.AddAsync(lista);
                 ctx.SaveChanges();
+            }
+        }
+
+        [HttpPost("lista/comercio/{idlista}/{idcomercio}")]
+        public void Post(int idlista, int idcomercio)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var lista = ctx.lista.Where(l => l.id == idlista).First();
+                var comercio = ctx.comercio.Where(c => c.id == idcomercio).First();
+
+                if (lista != null && comercio != null)
+                {
+                    lista.Comercio.Add(comercio);
+                }
+
             }
         }
 

@@ -108,7 +108,7 @@ public partial class PropBDContext : DbContext
 
         modelBuilder.Entity<Reseña>(entity =>
         {
-            entity.HasKey(r => new { r.comercio, r.usuario});
+            entity.HasKey(r => new { r.comercio, r.usuario });
 
             entity.Property(e => e.descripcion).HasMaxLength(200);
             entity.Property(e => e.titulo).HasMaxLength(100);
@@ -135,7 +135,7 @@ public partial class PropBDContext : DbContext
             entity.HasKey(e => e.id);
 
             entity.HasOne(e => e.usuario)
-                .WithMany()
+                .WithMany(u => u.listas)
                 .HasForeignKey(e => e.idusuario);
 
             entity.HasMany(e => e.Comercio).WithMany(p => p.lista_id)
