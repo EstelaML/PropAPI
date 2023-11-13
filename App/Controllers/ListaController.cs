@@ -92,6 +92,7 @@ namespace PropAPI.Controllers
                 {
                     lista.Comercio.Add(comercio);
                     comercio.lista_id.Add(lista);
+                    ctx.SaveChanges();
                 }
 
             }
