@@ -138,6 +138,12 @@ namespace PropAPI.Controllers
             using (PropBDContext ctx = new PropBDContext())
             {
                 Lista a = ctx.lista.Where(u => u.nombre == nombre).First();
+                List<Comercio> comercios = (List<Comercio>)a.Comercio;
+                foreach (var comercio in comercios)
+                {
+                    comercio.lista_id.Remove(a);
+                }
+                a.Comercio = new List<Comercio>();
                 ctx.lista.Remove(a);
                 ctx.SaveChanges();
             }
