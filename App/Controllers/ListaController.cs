@@ -47,7 +47,19 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.lista.Where(u => u.idusuario == id).Include(a => a.Comercio).ToList();
+                var listas = ctx.lista.Where(u => u.idusuario == id).Include(a => a.Comercio).ToList();
+                var l = listas.Select(l => new
+                {
+                    l.id,
+                    l.idusuario,
+                    l.imagen,
+                    l.nombre,
+                    Comercio = l.Comercio.Select(c => new
+                    {
+                        c.id,
+                        c.nombre
+                    })
+                }).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
