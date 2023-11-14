@@ -57,7 +57,8 @@ namespace PropAPI.Controllers
                     Comercio = l.Comercio.Select(c => new
                     {
                         c.id,
-                        c.nombre
+                        c.nombre,
+                        c.imagen
                     })
                 }).ToList();
                 var options = new JsonSerializerOptions
