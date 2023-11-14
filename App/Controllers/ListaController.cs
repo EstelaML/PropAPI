@@ -58,7 +58,6 @@ namespace PropAPI.Controllers
                     {
                         c.id,
                         c.nombre,
-                        c.imagen
                     })
                 }).ToList();
                 var options = new JsonSerializerOptions
