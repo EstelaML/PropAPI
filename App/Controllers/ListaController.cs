@@ -103,7 +103,6 @@ namespace PropAPI.Controllers
                 if (lista != null && comercio != null)
                 {
                     lista.Comercio.Add(comercio);
-                    comercio.lista_id.Add(lista);
                     ctx.SaveChanges();
                 }
 
@@ -137,15 +136,19 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                Lista a = ctx.lista.Where(u => u.nombre == nombre).First();
-                List<Comercio> comercios = (List<Comercio>)a.Comercio;
-                foreach (var comercio in comercios)
+                var lista = ctx.lista.Where(l => l.nombre == nombre).First();
+                List<Comercio> comercios = (List<Comercio>)lista.Comercio;
+
+                if (lista != null && comercios != null)
                 {
-                    comercio.lista_id.Remove(a);
+                    foreach (var comercio in comercios)
+                    {
+                        comercio.lista_id.Remove(lista);
+                    }
+                    ctx.lista.Remove(lista);
+                    ctx.SaveChanges();
                 }
-                a.Comercio = new List<Comercio>();
-                ctx.lista.Remove(a);
-                ctx.SaveChanges();
+
             }
         }
     }
