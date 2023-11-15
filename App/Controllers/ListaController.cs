@@ -28,12 +28,52 @@ namespace PropAPI.Controllers
 
         }
 
-        [HttpGet("id")]
+        [HttpGet("id/{id}")]
         public string GetAnuncioById(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
                 var l = ctx.lista.Where(u => u.id == id).Include(a => a.Comercio).ToList().First();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
+        [HttpGet("id/usuario/{id}")]
+        public string GetAnuncioByUserId(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var listas = ctx.lista.Where(u => u.idusuario == id).Include(a => a.Comercio).ToList();
+                var l = listas.Select(l => new
+                {
+                    l.id,
+                    l.idusuario,
+                    l.imagen,
+                    l.nombre,
+                    Comercio = l.Comercio.Select(c => new
+                    {
+                        c.id,
+                        c.nombre,
+                    })
+                }).ToList();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(l, options);
+            }
+        }
+
+        [HttpGet("id/usuario/sololistas/{id}")]
+        public string GetAnuncioByUserIdListas(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var l = ctx.lista.Where(u => u.idusuario == id).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -49,6 +89,23 @@ namespace PropAPI.Controllers
             {
                 var l = ctx.lista.AddAsync(lista);
                 ctx.SaveChanges();
+            }
+        }
+
+        [HttpPost("lista/comercio/{idlista}/{idcomercio}")]
+        public void Post(int idlista, int idcomercio)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var lista = ctx.lista.Where(l => l.id == idlista).First();
+                var comercio = ctx.comercio.Where(c => c.id == idcomercio).First();
+
+                if (lista != null && comercio != null)
+                {
+                    lista.Comercio.Add(comercio);
+                    ctx.SaveChanges();
+                }
+
             }
         }
 
@@ -71,6 +128,27 @@ namespace PropAPI.Controllers
                 Lista a = ctx.lista.Where(u => u.id == id).First();
                 ctx.lista.Remove(a);
                 ctx.SaveChanges();
+            }
+        }
+
+        [HttpDelete("borrarNombre/{nombre}")]
+        public void BorrarPorNombre(string nombre)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var lista = ctx.lista.Where(l => l.nombre == nombre).First();
+                List<Comercio> comercios = (List<Comercio>)lista.Comercio;
+
+                if (lista != null && comercios != null)
+                {
+                    foreach (var comercio in comercios)
+                    {
+                        comercio.lista_id.Remove(lista);
+                    }
+                    ctx.lista.Remove(lista);
+                    ctx.SaveChanges();
+                }
+
             }
         }
     }
