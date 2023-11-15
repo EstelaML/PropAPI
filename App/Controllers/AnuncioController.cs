@@ -42,12 +42,12 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpGet("novedad/{ID}")]
-        public string GetNovedadFromComercio(int ID)
+        [HttpGet("anuncio/{ID}")]
+        public string GetanuncioFromComercio(int ID)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.anuncio.Where(u => u.idcomercio == ID && u.tipo.Equals("Novedad")).ToList();
+                var l = ctx.anuncio.Where(u => u.idcomercio == ID).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
