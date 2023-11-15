@@ -28,7 +28,7 @@ namespace PropAPI.Controllers
 
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public string GetAnuncioById(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
