@@ -70,8 +70,8 @@ namespace PropAPI.Controllers
             using (PropBDContext ctx = new PropBDContext())
             {
                 var comerciosFiltrados = ctx.comercio
-                    .Where(c => c.valoracionpromedio <= puntuacion)
-                    .Where(c => c.tipo_id.Any(t => t.id == tipo))
+                    .Where(c => puntuacion <= c.valoracionpromedio)
+                    .Where(c => tipo == 0 || c.tipo_id.Any(t => t.id == tipo))
                     .Select(c => new
                     {
                         c.id,
