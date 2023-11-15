@@ -64,12 +64,11 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpGet("api/Comercio/filter")]
-        public String Filter([FromQuery] int distancia, [FromQuery] int puntuacion, [FromQuery] int tipo)
+        [HttpGet("/api/Comercio/filtros/{puntuacion}/{tipo}")]
+        public String Filters(int puntuacion, int tipo)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                Console.WriteLine($"Distancia: {distancia}, Puntuacion: {puntuacion}, Tipo: {tipo}");
                 var comerciosFiltrados = ctx.comercio
                     .Where(c => c.valoracionpromedio <= puntuacion)
                     .Where(c => c.tipo_id.Any(t => t.id == tipo))
