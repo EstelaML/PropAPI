@@ -64,6 +64,60 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpGet("api/Comercio/filter")]
+        public String Filter([FromQuery] int distancia, [FromQuery] int puntuacion, [FromQuery] int tipo)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                Console.WriteLine($"Distancia: {distancia}, Puntuacion: {puntuacion}, Tipo: {tipo}");
+                var comerciosFiltrados = ctx.comercio
+                    .Where(c => c.valoracionpromedio <= puntuacion)
+                    .Where(c => c.tipo_id.Any(t => t.id == tipo))
+                    .Select(c => new
+                    {
+                        c.id,
+                        c.nombre,
+                        c.direccion,
+                        c.telefono,
+                        c.horario,
+                        c.web,
+                        c.descripcion,
+                        c.nombreimagen,
+                        c.provincia,
+                        c.contraseña,
+                        c.mail,
+                        c.instagram,
+                        c.facebook,
+                        c.latitud,
+                        c.longitud,
+                        c.valoracionpromedio,
+                        idusuario = c.idusuario.Select(u => new
+                        {
+                            u.id,
+                            u.nombre,
+                            u.nickname,
+                            u.telefono,
+                            u.nombreimagen,
+                            u.contraseña,
+                            u.mail,
+                            u.estado
+                        }),
+                        tipo_id = c.tipo_id.Select(t => new
+                        {
+                            t.id,
+                            t.nombre,
+                            t.descripcion
+                        })
+                    }).ToList();
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+
+                return JsonSerializer.Serialize(comerciosFiltrados, options);
+            }
+        }
 
         [HttpGet("/api/Comercio/mail/{correo}")]
         public bool MailRepetido(string correo)
