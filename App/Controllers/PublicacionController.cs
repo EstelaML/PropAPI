@@ -87,10 +87,12 @@ namespace PropAPI.Controllers
                     {
                         c.id,
                         c.descripcion,
-                        c.nombreimagen,
+                        c.nombreimagenpublicacion,
                         c.titulo,
                         c.fecha,
-                        c.usuarioObject,
+                        c.usuarioObject.nombre,
+                        c.usuarioObject.nickname,
+                        c.usuarioObject.nombreimagen,
                         c.comercioObject
                     })
                     .ToList();
