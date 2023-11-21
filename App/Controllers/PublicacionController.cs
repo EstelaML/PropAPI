@@ -52,29 +52,6 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpGet("usuario/{id}")]
-        public string GetUserPublicacionById(int id)
-        {
-            using (PropBDContext ctx = new PropBDContext())
-            {
-                var l = ctx.publicacion.Where(x => x.usuario == id)?.OrderByDescending(c => c.fecha).Select(c => new
-                {
-                    c.id,
-                    c.descripcion,
-                    c.nombreimagen,
-                    c.titulo,
-                    c.fecha,
-                    c.usuarioObject,
-                    c.comercioObject
-                }).ToList();
-                var options = new JsonSerializerOptions
-                {
-                    ReferenceHandler = ReferenceHandler.Preserve,
-                };
-                return JsonSerializer.Serialize(l, options);
-            }
-        }
-
         [HttpGet("usuarios")]
         public string GetPublicacionesByUserIds([FromQuery] List<int> ids)
         {
@@ -87,7 +64,7 @@ namespace PropAPI.Controllers
                     {
                         PublicacionId = c.id,
                         c.descripcion,
-                        nombreimagenpublicacion = c.nombreimagenpublicacion,
+                        nombreimagenpublicacion = c.nombreimagen,
                         c.titulo,
                         c.fecha,
                         UsuarioId = c.usuarioObject.id,
