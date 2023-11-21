@@ -10,7 +10,7 @@ public partial class Publicacion
     public string descripcion { get; set; }
     public DateTime fecha { get; set; }
     public string nombreimagen { get; set; }
-    public virtual Comercio comercioObject { get; set; }
-    public virtual Usuario usuarioObject { get; set; }
+    public virtual Comercio? comercioObject { get; set; }
+    public virtual Usuario? usuarioObject { get; set; }
 
 }

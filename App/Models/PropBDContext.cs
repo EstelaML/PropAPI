@@ -140,7 +140,7 @@ public partial class PropBDContext : DbContext
 
         modelBuilder.Entity<Publicacion>(entity =>
         {
-            entity.HasKey(r => new { r.comercio, r.usuario });
+            entity.HasKey(e => e.id);
 
             entity.Property(e => e.descripcion).HasMaxLength(200);
             entity.Property(e => e.titulo).HasMaxLength(100);

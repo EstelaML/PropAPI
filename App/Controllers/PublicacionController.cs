@@ -109,10 +109,6 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var c = ctx.comercio.Where(x => x.id == publicacion.comercio).First();
-                var u = ctx.usuario.Where(x => x.id == publicacion.usuario).First();
-                publicacion.comercioObject = c;
-                publicacion.usuarioObject = u;
                 var l = ctx.publicacion.AddAsync(publicacion);
                 ctx.SaveChanges();
             }
