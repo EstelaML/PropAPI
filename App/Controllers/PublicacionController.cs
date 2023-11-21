@@ -85,14 +85,15 @@ namespace PropAPI.Controllers
                     .OrderByDescending(c => c.fecha)
                     .Select(c => new
                     {
-                        c.id,
+                        PublicacionId = c.id,
                         c.descripcion,
-                        c.nombreimagenpublicacion,
+                        nombreimagenpublicacion = c.nombreimagenpublicacion,
                         c.titulo,
                         c.fecha,
+                        UsuarioId = c.usuarioObject.id,
                         c.usuarioObject.nombre,
                         c.usuarioObject.nickname,
-                        c.usuarioObject.nombreimagen,
+                        nombreimagenusuario =  c.usuarioObject.nombreimagen,
                         c.comercioObject
                     })
                     .ToList();
