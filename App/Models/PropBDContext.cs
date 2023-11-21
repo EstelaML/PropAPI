@@ -50,6 +50,8 @@ public partial class PropBDContext : DbContext
     public virtual DbSet<Imagen> imagenes { get; set; }
     public virtual DbSet<Reseña> reseña { get; set; }
 
+    public virtual DbSet<Publicacion> publicacion { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("User Id=postgres;Password=4gcr4D4VpKwYK5Wz;Server=db.cgqvfaotdatwfllyfmhr.supabase.co;Port=5432;Database=postgres");
@@ -133,6 +135,19 @@ public partial class PropBDContext : DbContext
 
             entity.HasOne(e => e.comercioObject).WithMany(p => p.reseñas).HasForeignKey(e => e.comercio).HasConstraintName("fk_Reseña_Comercio");
             entity.HasOne(e => e.usuarioObject).WithMany(p => p.reseñas).HasForeignKey(e => e.usuario).HasConstraintName("fk_Reseña_Usuario");
+
+        });
+
+        modelBuilder.Entity<Publicacion>(entity =>
+        {
+            entity.HasKey(r => new { r.comercio, r.usuario });
+
+            entity.Property(e => e.descripcion).HasMaxLength(200);
+            entity.Property(e => e.titulo).HasMaxLength(100);
+
+
+            entity.HasOne(e => e.comercioObject).WithMany(p => p.publicaciones).HasForeignKey(e => e.comercio).HasConstraintName("publicacion_comercio_fkey");
+            entity.HasOne(e => e.usuarioObject).WithMany(p => p.publicaciones).HasForeignKey(e => e.usuario).HasConstraintName("publicacion_usuario_fkey");
 
         });
 

@@ -29,6 +29,7 @@ public partial class Usuario
 
     public virtual ICollection<Usuario> idseguidor { get; set; } = new List<Usuario>();
     public virtual ICollection<Reseña> reseñas { get; set; } = new List<Reseña>();
+    public virtual ICollection<Publicacion> publicaciones { get; set; } = new List<Publicacion>();
     public virtual ICollection<Lista> listas { get; set; } = new List<Lista>();
 
 }
