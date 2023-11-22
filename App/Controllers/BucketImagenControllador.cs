@@ -23,15 +23,15 @@ namespace PropAPI.Controllers
     {
         [HttpPost("/api/Bucket/{bucket}/{name}")]
         public async Task PostAsync(string bucket, string name, [FromBody] string b64)
-        {            
+        {
             using (PropBDContext ctx = new PropBDContext())
             {
                 Supabase.Client client = await ctx.getSupabaseClientAsync();
                 var binaryData = Convert.FromBase64String(b64);
 
                 await client.Storage
-                    .From("Images/"+ bucket)
-                    .Upload(binaryData, name, new Supabase.Storage.FileOptions { CacheControl="3600", Upsert = false });
+                    .From("Images/" + bucket)
+                    .Upload(binaryData, name, new Supabase.Storage.FileOptions { CacheControl = "3600", Upsert = true });
                 ctx.SaveChanges();
             }
         }
