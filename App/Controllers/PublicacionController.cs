@@ -71,7 +71,7 @@ namespace PropAPI.Controllers
                         nombreUsuario = c.usuarioObject.nombre,
                         c.usuarioObject.nickname,
                         nombreimagenusuario =  c.usuarioObject.nombreimagen,
-                        nombreComericio = c.comercioObject.nombre,
+                        nombreComercio = c.comercioObject.nombre,
                         comercioId = c.comercioObject.id
 
                     })
