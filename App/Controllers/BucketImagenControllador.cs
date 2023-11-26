@@ -31,27 +31,7 @@ namespace PropAPI.Controllers
 
                 await client.Storage
                     .From("Images/" + bucket)
-                    .Upload(binaryData, name, new Supabase.Storage.FileOptions { CacheControl = "3600", Upsert = false });
-                ctx.SaveChanges();
-            }
-        }
-    }
-
-    [ApiController]
-    [Route("api/Bucket/test")]
-    public class BucketImagenControllador2 : ControllerBase
-    {
-        [HttpPost("/api/Bucket/test/{bucket}/{name}")]
-        public async Task PostAsync(string bucket, string name, [FromBody] string b64)
-        {
-            using (PropBDContext ctx = new PropBDContext())
-            {
-                Supabase.Client client = await ctx.getSupabaseClientAsync();
-                var binaryData = Convert.FromBase64String(b64);
-
-                await client.Storage
-                    .From("Images")
-                    .Upload(binaryData, bucket + "/" + name, new Supabase.Storage.FileOptions { CacheControl = "3600", Upsert = true });
+                    .Upload(binaryData, name, new Supabase.Storage.FileOptions { CacheControl = "3600", Upsert = true });
                 ctx.SaveChanges();
             }
         }
