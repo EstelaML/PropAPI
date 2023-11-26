@@ -31,7 +31,7 @@ namespace PropAPI.Controllers
 
                 await client.Storage
                     .From("Images/" + bucket)
-                    .Upload(binaryData, name, new Supabase.Storage.FileOptions { CacheControl = "3600", Upsert = true });
+                    .Upload(binaryData, name, new Supabase.Storage.FileOptions { CacheControl = "3600", Upsert = false });
                 ctx.SaveChanges();
             }
         }
