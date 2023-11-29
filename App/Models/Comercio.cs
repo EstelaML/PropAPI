@@ -44,6 +44,8 @@ public partial class Comercio
     public virtual ICollection<Tipo> tipo_id { get; set; } = new List<Tipo>();
 
     public virtual ICollection<Reseña> reseñas { get; set; } = new List<Reseña>();
+
+    public virtual ICollection<Publicacion> publicaciones { get; set; } = new List<Publicacion>();
     public virtual ICollection<Anuncio> idcomercio { get; set; } = new List<Anuncio>();
 
     public virtual ICollection<Lista> lista_id { get; set; } = new List<Lista>();
