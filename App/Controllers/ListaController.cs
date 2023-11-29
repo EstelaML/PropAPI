@@ -52,7 +52,6 @@ namespace PropAPI.Controllers
                 {
                     l.id,
                     l.idusuario,
-                    l.imagen,
                     l.nombre,
                     Comercio = l.Comercio.Select(c => new
                     {
