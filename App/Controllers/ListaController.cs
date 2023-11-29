@@ -18,7 +18,7 @@ namespace PropAPI.Controllers
 
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.lista.Include(a => a.Comercio).Include(l => l.usuario).ToList();
+                var l = ctx.lista.Include(l => l.usuario).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -29,7 +29,7 @@ namespace PropAPI.Controllers
         }
 
         [HttpGet("id/{id}")]
-        public string GetAnuncioById(int id)
+        public string GetListaById(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
@@ -43,7 +43,7 @@ namespace PropAPI.Controllers
         }
 
         [HttpGet("id/usuario/{id}")]
-        public string GetAnuncioByUserId(int id)
+        public string GetListaByUserId(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
@@ -52,7 +52,6 @@ namespace PropAPI.Controllers
                 {
                     l.id,
                     l.idusuario,
-                    l.imagen,
                     l.nombre,
                     Comercio = l.Comercio.Select(c => new
                     {
@@ -69,7 +68,7 @@ namespace PropAPI.Controllers
         }
 
         [HttpGet("id/usuario/sololistas/{id}")]
-        public string GetAnuncioByUserIdListas(int id)
+        public string GetListaByUserIdListas(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
@@ -131,7 +130,7 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpDelete("borrarNombre/{nombre}")]
+        /*[HttpDelete("borrarNombre/{nombre}")]
         public void BorrarPorNombre(string nombre)
         {
             using (PropBDContext ctx = new PropBDContext())
@@ -141,6 +140,8 @@ namespace PropAPI.Controllers
 
                 if (lista != null && comercios != null)
                 {
+                    lista.Comercio.Clear();
+                    ctx.SaveChanges();
                     foreach (var comercio in comercios)
                     {
                         comercio.lista_id.Remove(lista);
@@ -148,6 +149,19 @@ namespace PropAPI.Controllers
                     ctx.lista.Remove(lista);
                     ctx.SaveChanges();
                 }
+
+            }
+        }*/
+
+        [HttpDelete("borrarNombre/{nombre}")]
+        public void BorrarPorNombre(string nombre)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var lista = ctx.lista.Where(l => l.nombre == nombre).First();
+                List<Comercio> comercios = (List<Comercio>)lista.Comercio;
+                ctx.lista.Remove(lista);
+                ctx.SaveChanges();
 
             }
         }
