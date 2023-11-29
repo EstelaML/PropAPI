@@ -15,11 +15,11 @@ public partial class PropBDContext : DbContext
     private readonly DbContextOptionsBuilder optionsBuilder;
     public PropBDContext()
     {
-        
+
 
         optionsBuilder = new DbContextOptionsBuilder();
         optionsBuilder.UseNpgsql("User Id=postgres;Password=4gcr4D4VpKwYK5Wz;Server=db.cgqvfaotdatwfllyfmhr.supabase.co;Port=5432;Database=postgres");
-    }   
+    }
 
     public async Task<Client> getSupabaseClientAsync()
     {
@@ -152,7 +152,8 @@ public partial class PropBDContext : DbContext
 
             entity.HasOne(e => e.usuario)
                 .WithMany(u => u.listas)
-                .HasForeignKey(e => e.idusuario);
+                .HasForeignKey(e => e.idusuario)
+                .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasMany(e => e.Comercio).WithMany(p => p.lista_id)
                 .UsingEntity<Dictionary<string, object>>(

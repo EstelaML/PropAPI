@@ -131,7 +131,7 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpDelete("borrarNombre/{nombre}")]
+        /*[HttpDelete("borrarNombre/{nombre}")]
         public void BorrarPorNombre(string nombre)
         {
             using (PropBDContext ctx = new PropBDContext())
@@ -141,6 +141,8 @@ namespace PropAPI.Controllers
 
                 if (lista != null && comercios != null)
                 {
+                    lista.Comercio.Clear();
+                    ctx.SaveChanges();
                     foreach (var comercio in comercios)
                     {
                         comercio.lista_id.Remove(lista);
@@ -148,6 +150,19 @@ namespace PropAPI.Controllers
                     ctx.lista.Remove(lista);
                     ctx.SaveChanges();
                 }
+
+            }
+        }*/
+
+        [HttpDelete("borrarNombre/{nombre}")]
+        public void BorrarPorNombre(string nombre)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var lista = ctx.lista.Where(l => l.nombre == nombre).First();
+                List<Comercio> comercios = (List<Comercio>)lista.Comercio;
+                ctx.lista.Remove(lista);
+                ctx.SaveChanges();
 
             }
         }
