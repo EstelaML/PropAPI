@@ -18,7 +18,7 @@ namespace PropAPI.Controllers
 
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.lista.Include(a => a.Comercio).Include(l => l.usuario).ToList();
+                var l = ctx.lista.Include(l => l.usuario).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -29,7 +29,7 @@ namespace PropAPI.Controllers
         }
 
         [HttpGet("id/{id}")]
-        public string GetAnuncioById(int id)
+        public string GetListaById(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
@@ -43,7 +43,7 @@ namespace PropAPI.Controllers
         }
 
         [HttpGet("id/usuario/{id}")]
-        public string GetAnuncioByUserId(int id)
+        public string GetListaByUserId(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
@@ -69,7 +69,7 @@ namespace PropAPI.Controllers
         }
 
         [HttpGet("id/usuario/sololistas/{id}")]
-        public string GetAnuncioByUserIdListas(int id)
+        public string GetListaByUserIdListas(int id)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
