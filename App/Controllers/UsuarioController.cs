@@ -346,6 +346,34 @@ namespace PropAPI.Controllers
                 ctx.SaveChanges();
             }
         }
+
+        [HttpPost("/api/Usuario/seguirLista/{idUsuario}/{idLista}")]
+        public string SeguirLista(int idUsuario, int idLista)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                try
+                {
+                    var usuario = ctx.usuario.Where(u => u.id == idUsuario).ToList().First();
+                    var lista = ctx.lista.Where(u => u.id == idLista).ToList().First();
+
+                    if (usuario != null && lista != null)
+                    {
+                        usuario.listasSeguidas.Add(lista);
+                        ctx.SaveChanges();
+                        return "Relación creada con éxito";
+                    }
+                    else
+                    {
+                        return "Usuario o lista no encontrados";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return $"Error al crear la relación: {ex.Message}";
+                }
+            }
+        }
         //
         //[HttpGet("PorNombre")]
         //public String GetUsuariosPorNombreE()
