@@ -16,6 +16,6 @@ public partial class Anuncio
     public string imagenes { get; set; }
     public string tipo { get; set; }
     public DateTime? fechaIni { get; set; }
-    public DateTime? fechaFin {  get; set; }
-    public Comercio Comercio { get; set; }
+    public DateTime?     fechaFin {  get; set; }
+    public Comercio? Comercio { get; set; }
 }
