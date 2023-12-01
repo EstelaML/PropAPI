@@ -119,6 +119,8 @@ public partial class PropBDContext : DbContext
             entity.Property(e => e.descripcion).IsRequired().HasMaxLength(255);
             entity.Property(e => e.imagenes).HasMaxLength(255);
             entity.Property(e => e.tipo).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.fechafin);
+            entity.Property(e => e.fechaini);
 
             entity.HasOne(e => e.Comercio).WithMany(p => p.idcomercio).HasForeignKey(e => e.idcomercio).HasConstraintName("fk_Anuncio_Comercio");
         });

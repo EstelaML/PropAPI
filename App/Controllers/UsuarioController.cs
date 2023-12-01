@@ -325,7 +325,7 @@ namespace PropAPI.Controllers
             }
         }
 
-        [HttpPut("/{id}")]
+        [HttpPut("{id}")]
         public void Put(int id, [FromBody] Usuario usuario)
         {
             using (PropBDContext ctx = new PropBDContext())
