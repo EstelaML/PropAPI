@@ -253,6 +253,22 @@ public partial class PropBDContext : DbContext
                 {
                     j.HasKey("idseguidor", "idseguido").HasName("PK__Usuarios__70A1204396F3F294");
                 });
+
+        entity.HasMany(d => d.listasSeguidas).WithMany(p => p.usuarioSeguidos)
+            .UsingEntity<Dictionary<string, object>>(
+                "listasseguidos",
+                r => r.HasOne<Lista>().WithMany()
+                    .HasForeignKey("idlista")
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_listasseguidos_lista"),
+                l => l.HasOne<Usuario>().WithMany()
+                    .HasForeignKey("idusuario")
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_listasseguidos_usuario"),
+                j =>
+                {
+                    j.HasKey("idlista", "idusuario").HasName("PK__Lista__EB987982DF082A6B");
+                });
     });
 
         OnModelCreatingGeneratedProcedures(modelBuilder);

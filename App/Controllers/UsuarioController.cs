@@ -346,6 +346,92 @@ namespace PropAPI.Controllers
                 ctx.SaveChanges();
             }
         }
+
+        [HttpPost("/api/Usuario/seguirLista/{idUsuario}/{idLista}")]
+        public string SeguirLista(int idUsuario, int idLista)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                try
+                {
+                    var usuario = ctx.usuario.Where(u => u.id == idUsuario).ToList().First();
+                    var lista = ctx.lista.Where(u => u.id == idLista).ToList().First();
+
+                    if (usuario != null && lista != null)
+                    {
+                        usuario.listasSeguidas.Add(lista);
+                        ctx.SaveChanges();
+                        return "Relación creada con éxito";
+                    }
+                    else
+                    {
+                        return "Usuario o lista no encontrados";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return $"Error al crear la relación: {ex.Message}";
+                }
+            }
+        }
+
+        [HttpDelete("/api/Usuario/dejarseguirLista/{idUsuario}/{idLista}")]
+        public string dejarSeguirLista(int idUsuario, int idLista)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                try
+                {
+                    var usuario = ctx.usuario.Where(u => u.id == idUsuario).Include(s => s.listasSeguidas).ToList().First();
+                    var lista = ctx.lista.Where(u => u.id == idLista).ToList().First();
+
+                    if (usuario != null && lista != null)
+                    {
+                        usuario.listasSeguidas.Remove(lista);
+                        ctx.SaveChanges();
+                        return "Relación remove con éxito";
+                    }
+                    else
+                    {
+                        return "Usuario o lista no encontrados";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return $"Error al remove la relación: {ex.Message}";
+                }
+            }
+        }
+
+        [HttpGet("/api/Usuario/ListasSeguidas/{id}")]
+        public String GetListasSeguidasById(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var usuarios = ctx.usuario.Where(u => u.id == id).Include(l => l.listasSeguidas).ToList();
+                var usuariosProyectados = usuarios.Select(u => new
+                {
+                    u.id,
+                    u.nombre,
+                    listasseguidas = u.listasSeguidas.Select(s => new
+                    {
+                        s.id,
+                        idusuariocreador = s.idusuario,
+                        nombreusuariocreador = ctx.usuario.Where(usu => usu.id == s.idusuario).FirstOrDefault()?.nickname,
+                        s.nombre,
+                        s.descripcion,
+                    }),
+                    
+                }).ToList();
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+
+                return JsonSerializer.Serialize(usuariosProyectados, options);
+            }
+        }
         //
         //[HttpGet("PorNombre")]
         //public String GetUsuariosPorNombreE()
