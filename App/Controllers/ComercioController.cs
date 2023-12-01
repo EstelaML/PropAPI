@@ -117,6 +117,19 @@ namespace PropAPI.Controllers
                 return JsonSerializer.Serialize(comerciosFiltrados, options);
             }
         }
+        [HttpGet("/api/Comercio/Login")]
+        public string LoginComercio(string userCredentials, string contrasena)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var comercio = ctx.comercio.Where(u => (u.nombre == userCredentials || u.mail == userCredentials) && u.contraseña == contrasena).Include(c => c.idcomercio).ToList();
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return comercio != null ? JsonSerializer.Serialize(comercio, options) : "Credenciales Incorrectas";
+            }
+        }
 
         [HttpGet("/api/Comercio/mail/{correo}")]
         public bool MailRepetido(string correo)
