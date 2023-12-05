@@ -19,6 +19,16 @@ namespace PropAPI.Controllers
             using (PropBDContext ctx = new PropBDContext())
             {
                 var l = ctx.lista.Include(l => l.usuario).ToList();
+                var listas = l.Select(l => new
+                {
+                    l.id,
+                    l.nombre,
+                    l.descripcion,
+                    l.zona,
+                    l.duracion,
+                    l.idusuario,
+                    l.usuario
+                });
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
