@@ -166,6 +166,21 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpPut("/api/Comercio/editarNombreImagen/{id}/{nombreImagen}")]
+        public void editarNombreImagen(int id, string nombreImagen)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var comercio = ctx.comercio.FirstOrDefault(u => u.id == id);
+                if (comercio != null)
+                {
+                    comercio.nombreimagen = nombreImagen;
+                    ctx.comercio.Update(comercio);
+                    ctx.SaveChanges();
+                }
+            }
+        }
+
         [HttpDelete("{ID}")]
         public void Delete(int id)
         {
