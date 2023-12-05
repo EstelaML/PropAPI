@@ -35,5 +35,21 @@ namespace PropAPI.Controllers
                 ctx.SaveChanges();
             }
         }
+
+        [HttpDelete("/api/Bucket/{bucket}/{name}")]
+        public async Task DeleteAsync(string bucket, string name)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                Supabase.Client client = await ctx.getSupabaseClientAsync();
+
+                await client.Storage
+                    .From("Images/" + bucket)
+                    .Remove(name);
+
+                ctx.SaveChanges();
+            }
+        }
+
     }
 }
