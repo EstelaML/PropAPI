@@ -82,12 +82,20 @@ namespace PropAPI.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] Lista lista)
+        public string Post([FromBody] Lista lista)
         {
+            Lista listaR;
             using (PropBDContext ctx = new PropBDContext())
             {
                 var l = ctx.lista.AddAsync(lista);
                 ctx.SaveChanges();
+                listaR = ctx.lista.FirstOrDefault(item => item.Equals(lista));
+            }
+            if (listaR == null) { return "vacio"; }
+
+            else
+            {
+                return listaR.id.ToString();
             }
         }
 
