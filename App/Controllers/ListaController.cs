@@ -27,13 +27,17 @@ namespace PropAPI.Controllers
                     l.zona,
                     l.duracion,
                     l.idusuario,
-                    l.usuario
+                    usuario = new Usuario
+                    {
+                        nickname = l.usuario.nickname,
+                        id = l.usuario.id
+                    }
                 });
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
                 };
-                return JsonSerializer.Serialize(l, options);
+                return JsonSerializer.Serialize(listas, options);
             }
 
         }
