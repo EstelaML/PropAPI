@@ -61,7 +61,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var listas = ctx.lista.Where(u => u.idusuario == id).Include(a => a.Comercio).ToList();
+                var listas = ctx.lista.Where(u => u.idusuario == id).Include(a => a.Comercio).Include(l => l.usuario).ToList();
                 var l = listas.Select(l => new
                 {
                     l.id,
@@ -71,7 +71,12 @@ namespace PropAPI.Controllers
                     {
                         c.id,
                         c.nombre,
-                    })
+                    }),
+                    usuario = new Usuario
+                    {
+                        nickname = l.usuario.nickname,
+                        id = l.usuario.id
+                    }
                 }).ToList();
                 var options = new JsonSerializerOptions
                 {
