@@ -67,6 +67,9 @@ namespace PropAPI.Controllers
                     l.id,
                     l.idusuario,
                     l.nombre,
+                    l.duracion,
+                    l.zona,
+                    l.descripcion,
                     Comercio = l.Comercio.Select(c => new
                     {
                         c.id,
