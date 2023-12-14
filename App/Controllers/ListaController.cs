@@ -108,8 +108,21 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var listas = ctx.lista.Where(l => l.idusuario != id && !l.usuarioSeguidos.Any(u => u.id == id)).Include(l => l.usuario).ToList();
-            
+                var l = ctx.lista.Where(l => l.idusuario != id && !l.usuarioSeguidos.Any(u => u.id == id)).Include(l => l.usuario).ToList();
+                var listas = l.Select(l => new
+                {
+                    l.id,
+                    l.nombre,
+                    l.descripcion,
+                    l.zona,
+                    l.duracion,
+                    l.idusuario,
+                    usuario = new Usuario
+                    {
+                        nickname = l.usuario.nickname,
+                        id = l.usuario.id
+                    }
+                });
 
                 var options = new JsonSerializerOptions
                 {
