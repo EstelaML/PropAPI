@@ -81,6 +81,22 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpGet("id/usuario/recomendedListas/{id}")]
+        public string GetRecomendedListaByUserId(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var listas = ctx.lista.Where(l => l.idusuario != id && !l.usuarioSeguidos.Any(u => u.id == id)).Include(l => l.usuario).ToList();
+            
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return JsonSerializer.Serialize(listas, options);
+            }
+        }
+
         [HttpPost]
         public void Post([FromBody] Lista lista)
         {
