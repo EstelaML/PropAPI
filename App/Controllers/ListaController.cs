@@ -19,11 +19,25 @@ namespace PropAPI.Controllers
             using (PropBDContext ctx = new PropBDContext())
             {
                 var l = ctx.lista.Include(l => l.usuario).ToList();
+                var listas = l.Select(l => new
+                {
+                    l.id,
+                    l.nombre,
+                    l.descripcion,
+                    l.zona,
+                    l.duracion,
+                    l.idusuario,
+                    usuario = new Usuario
+                    {
+                        nickname = l.usuario.nickname,
+                        id = l.usuario.id
+                    }
+                });
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
                 };
-                return JsonSerializer.Serialize(l, options);
+                return JsonSerializer.Serialize(listas, options);
             }
 
         }
@@ -47,17 +61,25 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var listas = ctx.lista.Where(u => u.idusuario == id).Include(a => a.Comercio).ToList();
+                var listas = ctx.lista.Where(u => u.idusuario == id).Include(a => a.Comercio).Include(l => l.usuario).ToList();
                 var l = listas.Select(l => new
                 {
                     l.id,
                     l.idusuario,
                     l.nombre,
+                    l.duracion,
+                    l.zona,
+                    l.descripcion,
                     Comercio = l.Comercio.Select(c => new
                     {
                         c.id,
                         c.nombre,
-                    })
+                    }),
+                    usuario = new Usuario
+                    {
+                        nickname = l.usuario.nickname,
+                        id = l.usuario.id
+                    }
                 }).ToList();
                 var options = new JsonSerializerOptions
                 {
@@ -98,12 +120,20 @@ namespace PropAPI.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] Lista lista)
+        public string Post([FromBody] Lista lista)
         {
+            Lista listaR;
             using (PropBDContext ctx = new PropBDContext())
             {
                 var l = ctx.lista.AddAsync(lista);
                 ctx.SaveChanges();
+                listaR = ctx.lista.FirstOrDefault(item => item.Equals(lista));
+            }
+            if (listaR == null) { return "vacio"; }
+
+            else
+            {
+                return listaR.id.ToString();
             }
         }
 

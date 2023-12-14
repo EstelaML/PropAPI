@@ -53,7 +53,7 @@ namespace PropAPI.Controllers
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
                 };
-                
+
                 return JsonSerializer.Serialize(usuariosProyectados, options);
             }
         }
@@ -222,7 +222,7 @@ namespace PropAPI.Controllers
                 {
                     var usuario = ctx.usuario.Where(u => u.id == idUsuario).ToList().First();
                     var comercio = ctx.comercio.Where(u => u.id == idComercio).ToList().First();
-                    
+
                     if (usuario != null && comercio != null)
                     {
                         usuario.idcomercio.Add(comercio);
@@ -337,16 +337,17 @@ namespace PropAPI.Controllers
         }
 
         [HttpPut("/api/Usuario/editarNombreImagen/{id}/{nombreImagen}")]
-        public void editarNombreImagen(int id,string nombreImagen)
+        public void editarNombreImagen(int id, string nombreImagen)
         {
             using (PropBDContext ctx = new PropBDContext())
             {
                 var usuario = ctx.usuario.FirstOrDefault(u => u.id == id);
-                if (usuario != null) {
+                if (usuario != null)
+                {
                     usuario.nombreimagen = nombreImagen;
                     ctx.usuario.Update(usuario);
                     ctx.SaveChanges();
-                }     
+                }
             }
         }
 
@@ -434,8 +435,10 @@ namespace PropAPI.Controllers
                         nombreusuariocreador = ctx.usuario.Where(usu => usu.id == s.idusuario).FirstOrDefault()?.nickname,
                         s.nombre,
                         s.descripcion,
+                        s.zona,
+                        s.duracion
                     }),
-                    
+
                 }).ToList();
 
                 var options = new JsonSerializerOptions

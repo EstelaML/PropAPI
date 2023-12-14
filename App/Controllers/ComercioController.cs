@@ -63,6 +63,61 @@ namespace PropAPI.Controllers
                 return JsonSerializer.Serialize(comerciosProyectados, options);
             }
         }
+
+        [HttpGet("/api/Comercio/filtros/{puntuacion}/{tipo}")]
+        public String Filters(int puntuacion, int tipo)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var comerciosFiltrados = ctx.comercio
+                    .Where(c => puntuacion == 0 || c.valoracionpromedio >= puntuacion)
+                    .Where(c => tipo == 0 || c.tipo_id.Any(t => t.id == tipo))
+                    .Select(c => new
+                    {
+                        c.id,
+                        c.nombre,
+                        c.direccion,
+                        c.telefono,
+                        c.horario,
+                        c.web,
+                        c.descripcion,
+                        c.nombreimagen,
+                        c.provincia,
+                        c.contraseña,
+                        c.mail,
+                        c.instagram,
+                        c.facebook,
+                        c.latitud,
+                        c.longitud,
+                        c.valoracionpromedio,
+                        idusuario = c.idusuario.Select(u => new
+                        {
+                            u.id,
+                            u.nombre,
+                            u.nickname,
+                            u.telefono,
+                            u.nombreimagen,
+                            u.contraseña,
+                            u.mail,
+                            u.estado
+                        }),
+                        tipo_id = c.tipo_id.Select(t => new
+                        {
+                            t.id,
+                            t.nombre,
+                            t.descripcion
+                        })
+                    }).ToList();
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+
+                return JsonSerializer.Serialize(comerciosFiltrados, options);
+            }
+        }
+
         [HttpGet("/api/Comercio/Login")]
         public string LoginComercio(string userCredentials, string contrasena)
         {
@@ -192,5 +247,7 @@ namespace PropAPI.Controllers
             }
         }
     }
+
+
 
 }
