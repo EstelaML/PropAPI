@@ -58,6 +58,51 @@ namespace PropAPI.Controllers
             }
         }
 
+        [HttpGet("/api/Usuario/NoSeguidores/{id}")]
+        public String GetNoSeguidoresById(int id)
+        {
+            using (PropBDContext ctx = new PropBDContext())
+            {
+                var usuarios = ctx.usuario.Where(u => u.id != id && !u.idseguidor.Any(u => u.id == id)).Include(u => u.idcomercio).ToList();
+                var usuariosProyectados = usuarios.Select(u => new
+                {
+                    u.id,
+                    u.nombre,
+                    u.nickname,
+                    u.telefono,
+                    u.nombreimagen,
+                    u.contraseña,
+                    u.mail,
+                    u.estado,
+                    idcomercio = u.idcomercio.Select(c => new
+                    {
+                        c.id,
+                        c.nombre,
+                        c.direccion,
+                        c.telefono,
+                        c.horario,
+                        c.web,
+                        c.descripcion,
+                        c.nombreimagen,
+                        c.provincia,
+                        c.contraseña,
+                        c.mail,
+                        c.instagram,
+                        c.facebook,
+                        c.latitud,
+                        c.longitud
+                    })
+                }).ToList();
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+
+                return JsonSerializer.Serialize(usuariosProyectados, options);
+            }
+        }
+
         [HttpGet("/api/Usuario/Seguidores/{id}")]
         public String GetSeguidoresById(int id)
         {
