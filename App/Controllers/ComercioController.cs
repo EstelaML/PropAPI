@@ -149,7 +149,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.comercio.Where(u => u.nombre == nombreComercio).Include(c => c.idusuario).Include(c => c.tipo_id).ToList().First();
+                var l = ctx.comercio.Where(u => u.nombre.ToLower() == nombreComercio.ToLower()).Include(c => c.idusuario).Include(c => c.tipo_id).ToList().First();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
@@ -177,7 +177,7 @@ namespace PropAPI.Controllers
         {
             using (PropBDContext ctx = new PropBDContext())
             {
-                var l = ctx.comercio.Where(u => u.nombre.Contains(nombreComercio)).ToList();
+                var l = ctx.comercio.Where(u => u.nombre.ToLower().Contains(nombreComercio.ToLower())).ToList();
                 var options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
