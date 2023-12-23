@@ -5,7 +5,7 @@ using System.IO;
 namespace PropAPI.Controllers
 {
     [ApiController]
-    [Route("api/loaderio-3bfeb3f079abdd8776a0af0de67b07e1/")]
+    [Route("api/loaderio-3bfeb3f079abdd8776a0af0de67b07e1")]
     public class TestingController : ControllerBase
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
@@ -15,7 +15,7 @@ namespace PropAPI.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-        [HttpGet("/")]
+        [HttpGet]
         public IActionResult DownloadFile()
         {
             // Ruta relativa al directorio de la aplicación
