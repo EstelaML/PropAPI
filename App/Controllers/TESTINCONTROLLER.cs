@@ -15,7 +15,7 @@ namespace PropAPI.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-        [HttpGet]
+        [HttpGet("/")]
         public IActionResult DownloadFile()
         {
             // Ruta relativa al directorio de la aplicación
