@@ -5,7 +5,7 @@ using System.IO;
 namespace PropAPI.Controllers
 {
     [ApiController]
-    [Route("loaderio-3bfeb3f079abdd8776a0af0de67b07e1/" + "/")]
+    [Route("loaderio-3bfeb3f079abdd8776a0af0de67b07e1/")]
     public class TestingController : ControllerBase
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
